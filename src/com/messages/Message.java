@@ -16,15 +16,15 @@ public class Message implements Serializable {
 		this.length = messagePayload==null ? MessageUtil.convertIntToByteArray(1) : MessageUtil.convertIntToByteArray(messagePayload.length + 1);
 	}
 
-	public byte[] getLengthOfMessage() {
+	public byte[] getLength() {
 		return length;
 	}
 
-	public byte getTypeOfMessage() {
+	public byte getType() {
 		return type;
 	}
 
-	public byte[] getPayloadOfMessage() {
+	public byte[] getPayload() {
 		return payload;
 	}
 
