@@ -26,15 +26,15 @@ public class Client implements Runnable {
         }
         for (Integer key : peersToConn.keySet()) {
             RemotePeer remotePeer = peersToConn.get(key);
-            try {
-                this.outThreads.execute(
-                        //TODO: Implement outgoing request handler
-                        //new OutgoingResquestHanndler(remotePeer)
-                );
-            }
-            catch (Exception ex) {
-                throw new RuntimeException();
-            }
+//            try {
+//                this.outThreads.execute(
+//                        //TODO: Implement outgoing request handler
+//                        //new OutgoingResquestHanndler(remotePeer)
+//                );
+//            }
+//            catch (Exception ex) {
+//                throw new RuntimeException();
+//            }
         }
 
         this.outThreads.shutdown();

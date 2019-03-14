@@ -95,7 +95,7 @@ public class RemotePeerInfo {
         this._portNo = _portNo;
         this._hasFile = _hasFile;
         this.download_rate = 0L;
-        this.bitfield = new BitSet(Peer.getPeerInstance().get_pieceCount());
+        this.bitfield = new BitSet(Peer.getPeerInstance().getPieceCount());
         this.state = MessageType.choke;
         this.bufferOutputStream = null;
 
