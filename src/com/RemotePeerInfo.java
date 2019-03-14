@@ -108,7 +108,7 @@ public class RemotePeerInfo {
         }
     }
 
-    @Override
+
     public int compareTo(RemotePeerInfo o)
     {
         return Math.toIntExact(this.download_rate - o.download_rate);

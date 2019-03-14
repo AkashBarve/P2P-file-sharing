@@ -11,9 +11,9 @@ import java.util.concurrent.Executors;
 public class Client implements Runnable {
     private ExecutorService outThreads;
     private Thread runningThread;
-    private HashMap<Integer, RemotePeer> peersToConn;
+    private HashMap<Integer, RemotePeerInfo> peersToConn;
 
-    public Client(HashMap<Integer, RemotePeer> peersToConn) {
+    public Client(HashMap<Integer, RemotePeerInfo> peersToConn) {
         this.peersToConn = peersToConn;
         this.outThreads = Executors.newFixedThreadPool(this.peersToConn.size());
     }
@@ -25,7 +25,7 @@ public class Client implements Runnable {
             this.runningThread = Thread.currentThread();
         }
         for (Integer key : peersToConn.keySet()) {
-            RemotePeer remotePeer = peersToConn.get(key);
+            RemotePeerInfo remotePeer = peersToConn.get(key);
 //            try {
 //                this.outThreads.execute(
 //                        //TODO: Implement outgoing request handler
