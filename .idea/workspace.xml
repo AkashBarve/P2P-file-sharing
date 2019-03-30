@@ -2,11 +2,56 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ae278da3-56ec-49b1-8e01-adb33f152bbf" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/com/CommonConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/PeerConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/peerProcess.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/RemotePeer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/Server.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/P2P-file-sharing/com/messages/Message.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/P2P-file-sharing/com/messages/Message.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/P2P-file-sharing/com/Client.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/P2P-file-sharing/com/Client.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/P2P-file-sharing/com/CommonConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/P2P-file-sharing/com/CommonConfig.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/P2P-file-sharing/com/Constants.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/P2P-file-sharing/com/MessageType.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/P2P-file-sharing/com/Peer$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/P2P-file-sharing/com/Peer$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/P2P-file-sharing/com/Peer.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/P2P-file-sharing/com/Peer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/P2P-file-sharing/com/PeerCommunicationHelper.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/P2P-file-sharing/com/PeerConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/P2P-file-sharing/com/PeerConfig.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/P2P-file-sharing/com/PeerInfo.cfg" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/P2P-file-sharing/com/PeerInfo.cfg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/P2P-file-sharing/com/RemotePeerInfo.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/P2P-file-sharing/com/messages/Handshake.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/P2P-file-sharing/com/messages/Message.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/P2P-file-sharing/com/messages/MessageHandler$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/P2P-file-sharing/com/messages/MessageHandler.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/P2P-file-sharing/com/messages/MessageUtil.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/P2P-file-sharing/com/model/BitField.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/P2P-file-sharing/com/model/Choke.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/P2P-file-sharing/com/model/Have.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/P2P-file-sharing/com/model/Interested.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/P2P-file-sharing/com/model/NotInterested.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/P2P-file-sharing/com/model/Piece.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/P2P-file-sharing/com/model/Request.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/P2P-file-sharing/com/model/UnChoke.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/P2P-file-sharing/com/peerProcess.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/P2P-file-sharing/com/peerProcess.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/CommonConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/CommonConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/Constants.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/MessageType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/Peer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/Peer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/PeerCommunicationHelper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/PeerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/PeerConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/PeerInfo.cfg" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/PeerInfo.cfg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/RemotePeerInfo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/messages/Handshake.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/messages/Message.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/messages/MessageHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/messages/MessageUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/model/BitField.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/model/Choke.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/model/Have.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/model/Interested.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/model/NotInterested.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/model/Piece.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/model/Request.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/model/UnChoke.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/peerProcess.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/peerProcess.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -18,28 +63,10 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="600">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/Constants.java">
+        <entry file="file://$PROJECT_DIR$/src/com/peerProcess.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="58">
-              <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/Peer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="899">
-              <caret line="33" column="18" selection-start-line="33" selection-start-column="18" selection-end-line="33" selection-end-column="18" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/RemotePeerInfo.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-883">
-              <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
+            <state relative-caret-position="310">
+              <caret line="16" column="27" selection-start-line="16" selection-start-column="27" selection-end-line="16" selection-end-column="27" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -48,21 +75,81 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/peerProcess.java">
+        <entry file="file://$PROJECT_DIR$/src/com/PeerInfo.cfg">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/Client.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="145">
-              <caret line="5" column="26" lean-forward="true" selection-start-line="5" selection-start-column="26" selection-end-line="5" selection-end-column="26" />
+            <state relative-caret-position="1363">
+              <caret line="50" column="76" selection-start-line="50" selection-start-column="76" selection-end-line="50" selection-end-column="76" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/com/PeerConfig.java">
+        <entry file="file://$PROJECT_DIR$/src/com/Server.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="348">
-              <caret line="12" column="42" selection-start-line="12" selection-start-column="42" selection-end-line="12" selection-end-column="42" />
+            <state relative-caret-position="1181">
+              <caret line="73" column="160" selection-start-line="73" selection-start-column="160" selection-end-line="73" selection-end-column="160" />
               <folding>
                 <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/Peer.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="166">
+              <caret line="36" column="22" selection-start-line="36" selection-start-column="22" selection-end-line="36" selection-end-column="22" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#1140#1141#0" expanded="true" />
+                <element signature="e#1168#1169#0" expanded="true" />
+                <element signature="e#458#459#0" expanded="true" />
+                <element signature="e#491#492#0" expanded="true" />
+                <element signature="e#561#562#0" expanded="true" />
+                <element signature="e#597#598#0" expanded="true" />
+                <element signature="e#1291#1292#0" expanded="true" />
+                <element signature="e#1316#1317#0" expanded="true" />
+                <element signature="e#1627#1628#0" expanded="true" />
+                <element signature="e#1661#1662#0" expanded="true" />
+                <element signature="e#1646#1647#0" expanded="true" />
+                <element signature="e#1672#1673#0" expanded="true" />
+                <element signature="e#2134#2135#0" expanded="true" />
+                <element signature="e#2171#2172#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/PeerConfig.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="174">
+              <caret line="6" column="23" selection-start-line="6" selection-start-column="23" selection-end-line="6" selection-end-column="23" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/RemotePeer.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="638">
+              <caret line="22" column="24" selection-start-line="22" selection-start-column="24" selection-end-line="22" selection-end-column="24" />
+              <folding>
+                <element signature="e#439#440#0" expanded="true" />
+                <element signature="e#468#469#0" expanded="true" />
+                <element signature="e#503#504#0" expanded="true" />
+                <element signature="e#531#532#0" expanded="true" />
+                <element signature="e#566#567#0" expanded="true" />
+                <element signature="e#596#597#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -71,47 +158,11 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/CommonConfig.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="290">
-              <caret line="10" column="61" selection-start-line="10" selection-start-column="8" selection-end-line="10" selection-end-column="61" />
+            <state relative-caret-position="232">
+              <caret line="8" column="10" selection-start-line="8" selection-start-column="10" selection-end-line="8" selection-end-column="10" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/model/Request.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="203">
-              <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/messages/MessageUtil.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="203">
-              <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/model/Choke.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="348">
-              <caret line="12" column="28" selection-start-line="12" selection-start-column="28" selection-end-line="12" selection-end-column="28" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/model/Have.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="87">
-              <caret line="3" column="2" selection-start-line="3" selection-start-column="2" selection-end-line="3" selection-end-column="2" />
             </state>
           </provider>
         </entry>
@@ -132,19 +183,20 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/src/Client.java" />
-        <option value="$PROJECT_DIR$/src/com/RemotePeer.java" />
         <option value="$PROJECT_DIR$/src/com/PeerCommunicationHelper.java" />
-        <option value="$PROJECT_DIR$/src/com/Peer.java" />
         <option value="$PROJECT_DIR$/src/com/model/Have.java" />
         <option value="$PROJECT_DIR$/src/com/model/UnChoke.java" />
         <option value="$PROJECT_DIR$/src/com/model/Interested.java" />
         <option value="$PROJECT_DIR$/src/com/model/Choke.java" />
         <option value="$PROJECT_DIR$/src/com/model/NotInterested.java" />
         <option value="$PROJECT_DIR$/src/com/RemotePeerInfo.java" />
-        <option value="$PROJECT_DIR$/src/com/Client.java" />
         <option value="$PROJECT_DIR$/src/com/CommonConfig.java" />
         <option value="$PROJECT_DIR$/src/com/PeerConfig.java" />
+        <option value="$PROJECT_DIR$/src/com/Peer.java" />
         <option value="$PROJECT_DIR$/src/com/peerProcess.java" />
+        <option value="$PROJECT_DIR$/src/com/RemotePeer.java" />
+        <option value="$PROJECT_DIR$/src/com/Client.java" />
+        <option value="$PROJECT_DIR$/src/com/Server.java" />
       </list>
     </option>
   </component>
@@ -178,20 +230,6 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="com" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="P2P-file-sharing" type="b2602c69:ProjectViewProjectNode" />
-              <item name="P2P-file-sharing" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="com" type="462c0819:PsiDirectoryNode" />
-              <item name="messages" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="P2P-file-sharing" type="b2602c69:ProjectViewProjectNode" />
-              <item name="P2P-file-sharing" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="com" type="462c0819:PsiDirectoryNode" />
-              <item name="model" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
@@ -202,7 +240,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1553909578121" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1553988879260" />
     <property name="last_opened_file_path" value="$USER_HOME$/CN-ref/p2pBitTorrent/src" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -267,18 +305,18 @@
       <workItem from="1552180199974" duration="2111000" />
       <workItem from="1552437990248" duration="5315000" />
       <workItem from="1552598175901" duration="10477000" />
-      <workItem from="1553808050561" duration="13699000" />
+      <workItem from="1553808050561" duration="47274000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="31623000" />
+    <option name="totallyTimeSpent" value="65198000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1987" y="35" width="1853" height="2125" extended-state="4" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18640226" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18640226" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -308,13 +346,43 @@
       <window_info anchor="right" id="Palette&#9;" order="7" />
       <window_info anchor="right" id="Database" order="8" />
     </layout>
+    <layout-to-restore>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18640226" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Image Layers" order="2" />
+      <window_info id="Designer" order="3" />
+      <window_info id="UI Designer" order="4" />
+      <window_info id="Capture Tool" order="5" />
+      <window_info id="Favorites" order="6" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32974717" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4997236" weight="0.32974717" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="8" />
+      <window_info anchor="bottom" id="Database Changes" order="9" />
+      <window_info anchor="bottom" id="Terminal" order="10" weight="0.32974717" />
+      <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.5002764" side_tool="true" weight="0.32974717" />
+      <window_info anchor="bottom" id="Messages" order="12" weight="0.32974717" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Palette" order="3" />
+      <window_info anchor="right" id="Theme Preview" order="4" />
+      <window_info anchor="right" id="Maven" order="5" />
+      <window_info anchor="right" id="Capture Analysis" order="6" />
+      <window_info anchor="right" id="Palette&#9;" order="7" />
+      <window_info anchor="right" id="Database" order="8" />
+    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/Client.java" />
-    <entry file="file://$PROJECT_DIR$/src/com/RemotePeer.java" />
     <entry file="file://$PROJECT_DIR$/src/com/model/Piece.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="58">
@@ -340,16 +408,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="435">
           <caret line="15" column="84" selection-start-line="15" selection-start-column="84" selection-end-line="15" selection-end-column="84" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/Client.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="986">
-          <caret line="37" column="9" selection-start-line="37" selection-start-column="9" selection-end-line="37" selection-end-column="9" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -419,34 +477,89 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/CommonConfig.java">
+    <entry file="file://$PROJECT_DIR$/src/com/RemotePeer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="290">
-          <caret line="10" column="61" selection-start-line="10" selection-start-column="8" selection-end-line="10" selection-end-column="61" />
+        <state relative-caret-position="638">
+          <caret line="22" column="24" selection-start-line="22" selection-start-column="24" selection-end-line="22" selection-end-column="24" />
+          <folding>
+            <element signature="e#439#440#0" expanded="true" />
+            <element signature="e#468#469#0" expanded="true" />
+            <element signature="e#503#504#0" expanded="true" />
+            <element signature="e#531#532#0" expanded="true" />
+            <element signature="e#566#567#0" expanded="true" />
+            <element signature="e#596#597#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/peerProcess.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="310">
+          <caret line="16" column="27" selection-start-line="16" selection-start-column="27" selection-end-line="16" selection-end-column="27" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/Peer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="899">
-          <caret line="33" column="18" selection-start-line="33" selection-start-column="18" selection-end-line="33" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/peerProcess.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="145">
-          <caret line="5" column="26" lean-forward="true" selection-start-line="5" selection-start-column="26" selection-end-line="5" selection-end-column="26" />
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/src/com/PeerInfo.cfg">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/PeerConfig.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="348">
-          <caret line="12" column="42" selection-start-line="12" selection-start-column="42" selection-end-line="12" selection-end-column="42" />
+        <state relative-caret-position="174">
+          <caret line="6" column="23" selection-start-line="6" selection-start-column="23" selection-end-line="6" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/Peer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="166">
+          <caret line="36" column="22" selection-start-line="36" selection-start-column="22" selection-end-line="36" selection-end-column="22" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1140#1141#0" expanded="true" />
+            <element signature="e#1168#1169#0" expanded="true" />
+            <element signature="e#458#459#0" expanded="true" />
+            <element signature="e#491#492#0" expanded="true" />
+            <element signature="e#561#562#0" expanded="true" />
+            <element signature="e#597#598#0" expanded="true" />
+            <element signature="e#1291#1292#0" expanded="true" />
+            <element signature="e#1316#1317#0" expanded="true" />
+            <element signature="e#1627#1628#0" expanded="true" />
+            <element signature="e#1661#1662#0" expanded="true" />
+            <element signature="e#1646#1647#0" expanded="true" />
+            <element signature="e#1672#1673#0" expanded="true" />
+            <element signature="e#2134#2135#0" expanded="true" />
+            <element signature="e#2171#2172#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/CommonConfig.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="232">
+          <caret line="8" column="10" selection-start-line="8" selection-start-column="10" selection-end-line="8" selection-end-column="10" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/Client.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1363">
+          <caret line="50" column="76" selection-start-line="50" selection-start-column="76" selection-end-line="50" selection-end-column="76" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/Server.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1181">
+          <caret line="73" column="160" selection-start-line="73" selection-start-column="160" selection-end-line="73" selection-end-column="160" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

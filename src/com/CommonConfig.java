@@ -6,8 +6,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CommonConfig {
+    public static String Filename;
 
-    public static void CommonConfig(String filename) {
+    public static void CommonConfig(String filename, Peer peer) {
         filename = System.getProperty("user.dir") + filename;
         System.out.println(filename);
         try {
@@ -19,12 +20,13 @@ public class CommonConfig {
                 String s1[] = s.split(" ");
                 common_config_details.put(s1[0], s1[1]);
             }
-            setNumberofPreferredNeighbors(common_config_details);
-            setUnchokingInterval(common_config_details);
-            setOptimisticUnchokingInterval(common_config_details);
-            setFilename(common_config_details);
-            setFileSize(common_config_details);
-            setPieceSize(common_config_details);
+            Integer NumberOfPreferredNeighbors = Integer.parseInt(common_config_details.get("NumberOfPreferredNeighbors"));
+            Integer UnchokingInterval = Integer.parseInt(common_config_details.get("UnchokingInterval"));
+            Integer OptimisticUnchokingInterval = Integer.parseInt(common_config_details.get("OptimisticUnchokingInterval"));
+            Filename = common_config_details.get("FileName");
+            Integer FileSize = Integer.parseInt(common_config_details.get("FileSize"));
+            Integer PieceSize = Integer.parseInt(common_config_details.get("PieceSize"));
+            peer.TotalPieces(FileSize, PieceSize);
             br.close();
         }
         catch (FileNotFoundException e){
@@ -34,36 +36,5 @@ public class CommonConfig {
             System.out.println("IO Exception");
         }
     }
-
-    private static void setPieceSize(Map<String, String> common_config_details) {
-        Integer PieceSize = Integer.parseInt(common_config_details.get("PieceSize"));
-        System.out.println(PieceSize);
-    }
-
-    private static void setFileSize(Map<String, String> common_config_details) {
-        Integer FileSize = Integer.parseInt(common_config_details.get("FileSize"));
-        System.out.println(FileSize);
-    }
-
-    private static void setFilename(Map<String, String> common_config_details) {
-        String Filename = common_config_details.get("FileName");
-        System.out.println(Filename);
-    }
-
-    private static void setOptimisticUnchokingInterval(Map<String, String> common_config_details) {
-        Integer OptimisticUnchokingInterval = Integer.parseInt(common_config_details.get("OptimisticUnchokingInterval"));
-        System.out.println(OptimisticUnchokingInterval);
-    }
-
-    private static void setUnchokingInterval(Map<String, String> common_config_details) {
-        Integer UnchokingInterval = Integer.parseInt(common_config_details.get("UnchokingInterval"));
-        System.out.println(UnchokingInterval);
-    }
-
-    private static void setNumberofPreferredNeighbors(Map<String, String> common_config_details) {
-        Integer NumberOfPreferredNeighbors = Integer.parseInt(common_config_details.get("NumberOfPreferredNeighbors"));
-        System.out.println(NumberOfPreferredNeighbors);
-    }
-
 
 }
