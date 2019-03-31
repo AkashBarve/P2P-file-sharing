@@ -33,7 +33,7 @@ public class Server implements Runnable {
             Socket clientSocket;
             try {
                 clientSocket = ServerSocket.accept();
-                this.incomingConnThreadPool.execute(new handler(clientSocket, peerToLookFor));
+                this.incomingConnThreadPool.execute(new handler(clientSocket, Peer.startInstance().peersYetToStart.get(peerToLookFor)));
                         //new IncomingConnectionRequest(Peer.startInstance().peersYetToStart.get(peerToLookFor),clientSocket));
             } catch (IOException e) {
                 System.out.println("Error accepting connection from: " + peerToLookFor);
@@ -61,17 +61,22 @@ public class Server implements Runnable {
     }
 
     private class handler implements Runnable {
+        private RemotePeer remotePeer;
         private Socket socket;
         private int number;
+        private BufferedOutputStream out;
+        private BufferedInputStream in;
 
-        public handler(Socket clientSocket, int peerToLookFor) {
+        public handler(Socket clientSocket, RemotePeer remotePeerDetails) {
             this.socket = clientSocket;
-            this.number = peerToLookFor;
+            this.remotePeer = remotePeerDetails;
         }
 
         @Override
         public void run() {
-            System.out.println("Server of peerID " + Peer.startInstance().getPeerID() + " received succesfull connection from" + socket + "xyx" + number + " " +runningThread.getId());
+            System.out.println("Server of peerID " + Peer.startInstance().getPeerID() + " received succesfull connection from" + socket + "xyx" + number);
+            PeerToPeer p2p = new PeerToPeer(this.socket, this.remotePeer);
+            p2p.initialize();
 //            try {
 //                var in = new Scanner(socket.getInputStream());
 //                var out = new PrintWriter(socket.getOutputStream(), true);
