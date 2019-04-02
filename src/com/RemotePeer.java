@@ -2,6 +2,7 @@ package com;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 public class RemotePeer {
@@ -9,8 +10,8 @@ public class RemotePeer {
     private final int portNo;
     private final String hostName;
     private final int hasFileOrNot;
-    public BufferedOutputStream BufferedOutputStream;
-    public BufferedInputStream BufferedInputStream;
+    public ObjectOutputStream OutputStream;
+    public ObjectInputStream InputStream;
     //public java.io.ObjectOutputStream ObjectOutputStream;
 
     public RemotePeer(int readPeerId, String hostname, int portNo, int hasFileOrNot) {

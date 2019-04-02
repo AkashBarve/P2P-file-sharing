@@ -2,12 +2,14 @@ package com;
 
 import java.io.*;
 import java.net.Socket;
+import java.nio.ByteBuffer;
+import java.util.Arrays;
 
 public class PeerToPeer {
     private Socket socket;
     private RemotePeer remotePeer;
-    private BufferedOutputStream out;
-    private BufferedInputStream in;
+    private ObjectOutputStream out;
+    private ObjectInputStream in;
     private String header;
     private String zeroBits;
     private int peerID;
@@ -22,11 +24,11 @@ public class PeerToPeer {
 
     public void initialize() {
        try{
-           this.out = new BufferedOutputStream(socket.getOutputStream());
-           this.remotePeer.BufferedOutputStream = this.out;
+           this.out = new ObjectOutputStream(socket.getOutputStream());
+           this.remotePeer.OutputStream = this.out;
            this.out.flush();
-           this.in = new BufferedInputStream(socket.getInputStream());
-           this.remotePeer.BufferedInputStream = this.in;
+           this.in = new ObjectInputStream(socket.getInputStream());
+           this.remotePeer.InputStream = this.in;
        }
        catch(IOException e) {
            System.out.println("Peer to peer initialization failed");
@@ -48,21 +50,32 @@ public class PeerToPeer {
 
     }
 
-    private void sendHandShake(BufferedOutputStream out) throws IOException {
-        byte[] handshakemessage = "P2P".getBytes("UTF-8");
-        System.out.println("imp" + handshakemessage);
-        out.write(1);
+    private void sendHandShake(ObjectOutputStream out) throws IOException {
+        String s = this.header + this.zeroBits + Integer.toString(this.peerID);
+        byte[] handshakemessage = new byte[3];
+        String pid = Integer.toString(this.peerID);
+        handshakemessage = s.getBytes();
+
+        ByteBuffer handbuffer = ByteBuffer.allocate(3);
+        byte[] payload = handbuffer.array();
+        //Character s = 'a';
+        System.out.println("sending" + handshakemessage);
+        out.write(handshakemessage);
         System.out.println("Handshake message sent");
         out.flush();
     }
-    private boolean receiveHandshake(BufferedInputStream in) throws IOException {
-        //byte[] b = new byte[1];
-        int i = in.read();
-        //in.read();
-        //System.out.println("imp1" + b);
-        byte[] test = "akash".getBytes("US-ASCII");
-        System.out.println("Going in receive handshake" + i + " " + test + " " + peerID + " " + remotePeer.getRemotePeerId());
-        if (i == 1){
+    private boolean receiveHandshake(ObjectInputStream in) throws IOException {
+        byte[] b = new byte[32];
+        in.read(b);
+        byte[] header = Arrays.copyOfRange(b,0,18);
+        String s = new String(header);
+        byte[] pidToCompare = Arrays.copyOfRange(b, 28, 32);
+        String pid = new String(pidToCompare);
+        String pidc = Integer.toString(remotePeer.getRemotePeerId());
+
+        System.out.println("reading" + s + " " + pid);
+        System.out.println("Going in receive handshake" + " " + " " + peerID + " " + remotePeer.getRemotePeerId());
+        if (s.equals(this.header) && pid.equals(pidc)){
             System.out.println("hand shaken");
             return true;
         }
