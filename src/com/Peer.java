@@ -81,4 +81,8 @@ public class Peer {
     private void setBitField(int i) {
         this.bitfieldArray.set(i);
     }
+
+    public BitSet getBitfieldArray() {
+        return this.bitfieldArray;
+    }
 }
