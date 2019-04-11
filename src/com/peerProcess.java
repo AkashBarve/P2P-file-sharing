@@ -1,6 +1,6 @@
 package com;
 
-import com.logs.Logger;
+import com.logs.PeerLogging;
 
 import java.io.File;
 import java.io.FileNotFoundException;

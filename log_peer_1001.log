@@ -1,0 +1,4 @@
+Apr 11, 2019 7:27:47 PM com.logs.PeerLogging logMakesConnectionTo
+INFO: 11/04/2019 07:27:47 PM: Peer 1001 makes a connection to Peer 1002.
+Apr 11, 2019 7:27:47 PM com.logs.PeerLogging logIsConnectedFrom
+INFO: 11/04/2019 07:27:47 PM: Peer 1001 is connected from Peer 1002.

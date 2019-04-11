@@ -1,6 +1,7 @@
 package com;
 
-import com.logs.Logger;
+//import com.logs.Logger;
+import com.logs.PeerLogging;
 
 import java.rmi.UnexpectedException;
 import java.util.BitSet;
@@ -30,7 +31,7 @@ public class Peer {
         }
         return peer;
     }
-    Logger logger = new Logger();
+    PeerLogging peerLogger = new PeerLogging();
 
     public void setPeerID(int peerID) {
         this.peerID = peerID;
@@ -86,7 +87,7 @@ public class Peer {
     }
 
     public void initLogger(int peerID) {
-        Logger logger = new Logger();
+        PeerLogging logger = new PeerLogging();
         logger.createLogger(peerID);
     }
 

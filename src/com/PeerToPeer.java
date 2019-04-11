@@ -1,5 +1,6 @@
 package com;
 
+import com.logs.PeerLogging;
 import com.message.Message;
 
 import java.io.*;
@@ -38,6 +39,7 @@ public class PeerToPeer {
         }
        try {
            sendHandShake(this.out);
+           Peer.startInstance().peerLogger.logMakesConnectionTo(peerID, remotePeer.getRemotePeerId());
        }
        catch (IOException e) {
            System.out.println("Error in sending error message");
@@ -45,6 +47,7 @@ public class PeerToPeer {
         try {
             if(receiveHandshake(this.in)) {
                 System.out.println("Sucessfull handhshake");
+                Peer.startInstance().peerLogger.logIsConnectedFrom(peerID, remotePeer.getRemotePeerId());
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -89,12 +92,15 @@ public class PeerToPeer {
 
     public void startCommunication() throws Exception {
         Message message;
+        boolean communicationFlag = true;
 
-        if(!Peer.startInstance().getBitfieldArray().isEmpty()) {
+        if(Peer.startInstance().getBitfieldArray().isEmpty() == false) {
+            System.out.println("hello folks");
             message = PeerToPeerHelper.sendBitFieldMessage(this.out);
         }
 
-        while (true) {
+        while (communicationFlag) {
+
             byte[] lengthAndMessageType = new byte[5];
             this.in.read(lengthAndMessageType);
             byte messageType = lengthAndMessageType[4];
@@ -103,7 +109,9 @@ public class PeerToPeer {
 
             switch (messageType) {
                 case (byte) 0:
-                    // don't do anything
+                    while (this.in.available() == 0) {
+                        // don't do anything
+                    }
                     break;
                 case (byte) 1:
 //                    BitSet remoteBS = remotePeer.get

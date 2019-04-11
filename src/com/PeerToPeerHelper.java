@@ -18,6 +18,7 @@ public class PeerToPeerHelper {
     }
 
     public static byte[] getMessage(ObjectInputStream in) throws IOException {
+
         byte[] lengthByte = new byte[4];
         int incomingMessageLength = -1;
         byte[] incomingData = null;
