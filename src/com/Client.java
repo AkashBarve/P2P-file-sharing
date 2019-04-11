@@ -1,7 +1,9 @@
 package com;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -45,7 +47,12 @@ public class Client implements Runnable{
         public void run() {
             int peerID = this.remotepeer.getRemotePeerId();
             int portNo = this.remotepeer.getRemotePortNo();
-            String hostname = this.remotepeer.getHostName();
+            InetAddress hostname = null;
+            try {
+                hostname = InetAddress.getByName(this.remotepeer.getHostName());
+            } catch (UnknownHostException e) {
+                e.printStackTrace();
+            }
             try {
                 Socket socket = new Socket(hostname, portNo);
                 System.out.println("Client code connected succesfully to " + peerID);

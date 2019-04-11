@@ -77,18 +77,7 @@ public class Server implements Runnable {
             System.out.println("Server of peerID " + Peer.startInstance().getPeerID() + " received succesfull connection from" + socket + "xyx" + number);
             PeerToPeer p2p = new PeerToPeer(this.socket, this.remotePeer);
             p2p.initialize();
-//            try {
-//                var in = new Scanner(socket.getInputStream());
-//                var out = new PrintWriter(socket.getOutputStream(), true);
-//                while (in.hasNextLine()) {
-//                    out.println(in.nextLine().toUpperCase());
-//                }
-//            } catch (Exception e) {
-//                System.out.println("Error:" + socket);
-//            } finally {
-//                try { socket.close(); } catch (IOException e) {}
-//                System.out.println("Closed: " + socket);
-//            }
+
         }
 
 
