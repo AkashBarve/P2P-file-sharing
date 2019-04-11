@@ -1,5 +1,7 @@
 package com;
 
+import com.logs.Logger;
+
 import java.rmi.UnexpectedException;
 import java.util.BitSet;
 import java.util.Collections;
@@ -28,6 +30,7 @@ public class Peer {
         }
         return peer;
     }
+    Logger logger = new Logger();
 
     public void setPeerID(int peerID) {
         this.peerID = peerID;
@@ -80,5 +83,11 @@ public class Peer {
 
     private void setBitField(int i) {
         this.bitfieldArray.set(i);
+    }
+
+    public void initLogger(int peerID) {
+        Logger logger = new Logger();
+        logger.createLogger(peerID);
+
     }
 }

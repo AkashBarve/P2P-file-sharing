@@ -1,5 +1,7 @@
 package com;
 
+import com.logs.Logger;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -15,6 +17,7 @@ public class peerProcess {
             int peerID = Integer.parseInt(args[0]);
             CommonConfig.CommonConfig(COMMON_CONFIG, peer);
             PeerConfig.PeerConfig(PEER_CONFIG, peerID, peer);
+            peer.initLogger(peer.getPeerID());
             System.out.println("debug" + peer.getHasFileOrNot());
             if (peer.getHasFileOrNot() == 1) {
                 try {
