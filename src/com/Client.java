@@ -58,7 +58,8 @@ public class Client implements Runnable{
                 System.out.println("Client code connected succesfully to " + peerID);
                 PeerToPeer p2p = new PeerToPeer(socket, remotepeer);
                 p2p.initialize();
-            } catch (IOException e) {
+                p2p.startCommunication();
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 

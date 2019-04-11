@@ -88,6 +88,9 @@ public class Peer {
     public void initLogger(int peerID) {
         Logger logger = new Logger();
         logger.createLogger(peerID);
+    }
 
+    public BitSet getBitfieldArray() {
+        return this.bitfieldArray;
     }
 }

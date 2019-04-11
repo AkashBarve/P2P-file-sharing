@@ -78,6 +78,12 @@ public class Server implements Runnable {
             PeerToPeer p2p = new PeerToPeer(this.socket, this.remotePeer);
             p2p.initialize();
 
+            try {
+                p2p.startCommunication();
+            } catch (Exception e) {
+                throw new RuntimeException("Can't communicate with: "+this.remotePeer.getRemotePeerId(), e);
+            }
+
         }
 
 
