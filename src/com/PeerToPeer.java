@@ -1,9 +1,12 @@
 package com;
 
+import com.message.Message;
+
 import java.io.*;
 import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
+import java.util.BitSet;
 
 public class PeerToPeer {
     private Socket socket;
@@ -81,6 +84,47 @@ public class PeerToPeer {
         }
         else {
             return false;
+        }
+    }
+
+    public void startCommunication() throws Exception {
+        Message message;
+
+        if(!Peer.startInstance().getBitfieldArray().isEmpty()) {
+            message = PeerToPeerHelper.sendBitFieldMessage(this.out);
+        }
+
+        while (true) {
+            byte[] lengthAndMessageType = new byte[5];
+            this.in.read(lengthAndMessageType);
+            byte messageType = lengthAndMessageType[4];
+
+            byte[] incomingMessagePayload = PeerToPeerHelper.getMessage(this.in);
+
+            switch (messageType) {
+                case (byte) 0:
+                    // don't do anything
+                    break;
+                case (byte) 1:
+//                    BitSet remoteBS = remotePeer.get
+                    int pieceIndex;
+
+                    break;
+                case (byte) 2:
+                    break;
+                case (byte) 3:
+                    break;
+                case (byte) 4:
+                    break;
+                case (byte) 5:
+                    break;
+                case (byte) 6:
+                    break;
+                case (byte) 7:
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
