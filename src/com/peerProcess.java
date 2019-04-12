@@ -1,11 +1,14 @@
 package com;
 
-import com.logs.PeerLogging;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+
+import static com.CommonConfig.CommonConfig;
+import static com.CommonConfig.Filename;
+import static com.PeerConfig.PeerConfig;
+
 
 public class peerProcess {
     private static Peer peer;
@@ -15,20 +18,25 @@ public class peerProcess {
         if (args.length == 1) {
             peer = Peer.startInstance();
             int peerID = Integer.parseInt(args[0]);
-            CommonConfig.CommonConfig(COMMON_CONFIG, peer);
-            PeerConfig.PeerConfig(PEER_CONFIG, peerID, peer);
-            peer.initLogger(peer.getPeerID());
+            CommonConfig(COMMON_CONFIG, peer);
+            PeerConfig(PEER_CONFIG, peerID, peer);
             System.out.println("debug" + peer.getHasFileOrNot());
             if (peer.getHasFileOrNot() == 1) {
                 try {
-                    String filepath = System.getProperty("user.dir") + "/peer_" + Integer.toString(peerID) + "/" + CommonConfig.Filename;
-                    System.out.println(filepath);
+                    String filepath = System.getProperty("user.dir") + "/peer_" + Integer.toString(peerID) + "/" + Filename;
                     File f = new File(filepath);
-                    if (!f.exists())
-                        throw new FileNotFoundException();
                     peer.setBitFieldArray();
+                    if (!f.exists()) {
+                        throw new FileNotFoundException();
+                    }
+                    int Piecesize = CommonConfig.getPieceSize();
+                    ManageFile.fileSplit(f, Piecesize);
                 } catch (FileNotFoundException e) {
                     System.out.println("File to share not present, add it as ~/project/peer_<ID>/xyz.pdf");
+                }
+                catch(NullPointerException e)
+                {
+                    System.out.print("NullPointerException Caught");
                 }
             }
             else {
