@@ -7,6 +7,12 @@ import java.util.Map;
 
 public class CommonConfig {
     public static String Filename;
+    private static Integer NumberOfPreferredNeighbors;
+    private static Integer UnchokingInterval;
+    private static Integer OptimisticUnchokingInterval;
+    private static String FileName;
+    private static Integer FileSize;
+    private static Integer PieceSize;
 
     public static void CommonConfig(String filename, Peer peer) {
         filename = System.getProperty("user.dir") + filename;
