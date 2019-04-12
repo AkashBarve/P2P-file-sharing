@@ -101,8 +101,8 @@ public class PeerToPeerHelper {
         out.flush();
     }
 
-    public static void sendPieceMessage(ObjectOutputStream out, int pieceIndex, ManageFile fileManager) throws Exception {
-        Message message = MessageBuilder.buildMessage((byte) 7, fileManager.getPartOfFile(pieceIndex));
+    public static void sendPieceMessage(ObjectOutputStream out, ManageFile fileManager, int pieceIndex, byte[] pieceIndexByteArray) throws Exception {
+        Message message = MessageBuilder.buildMessage((byte) 7, MessageUtil.concatenateByteArrays(pieceIndexByteArray, fileManager.getPartOfFile(pieceIndex)));
         out.writeObject(message);
         out.flush();
     }

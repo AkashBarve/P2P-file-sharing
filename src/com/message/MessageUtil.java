@@ -6,15 +6,15 @@ import java.io.ObjectInputStream;
 import java.util.BitSet;
 
 public class MessageUtil {
-    public static byte[] lengthAsByteArray(int len) {
-        byte[] length = new byte[4];
+    public static byte[] intToByteArray(int i) {
+        byte[] byteArray = new byte[4];
 
-        length[0] = (byte) ((len & 0xFF000000) >> 24);
-        length[1] = (byte) ((len & 0x00FF0000) >> 16);
-        length[2] = (byte) ((len & 0x0000FF00) >> 8);
-        length[3] = (byte) (len & 0x000000FF);
+        byteArray[0] = (byte) ((i & 0xFF000000) >> 24);
+        byteArray[1] = (byte) ((i & 0x00FF0000) >> 16);
+        byteArray[2] = (byte) ((i & 0x0000FF00) >> 8);
+        byteArray[3] = (byte) (i & 0x000000FF);
 
-        return length;
+        return byteArray;
     }
 
     public static byte[] concatenateByteToArray(byte[] bArray, byte b) {

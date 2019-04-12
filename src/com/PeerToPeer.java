@@ -181,7 +181,7 @@ public class PeerToPeer {
     private void handleRequestMessage(byte[] messagePayload) throws Exception {
         int pieceIndex = MessageUtil.byteArrayToInt(messagePayload);
         if (Peer.startInstance().interestedPeers.containsKey(this.remotePeer.getRemotePeerId())) {
-            PeerToPeerHelper.sendPieceMessage(this.out, pieceIndex, this.fileManager);
+            PeerToPeerHelper.sendPieceMessage(this.out, this.fileManager, pieceIndex, messagePayload);
         }
     }
 }
