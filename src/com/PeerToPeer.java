@@ -119,7 +119,7 @@ public class PeerToPeer {
                     break;
                 case (byte) 1:
                     // Unchoke
-                    int pieceidx = PeerToPeerHelper.getPieceIndex(remotePeer);
+                    int pieceidx = PeerToPeerHelper.getPieceIndexToRequest(remotePeer);
                     Unchoke(pieceidx);
                     break;
                 case (byte) 2:
@@ -160,11 +160,11 @@ public class PeerToPeer {
     }
 
     private void Unchoke(int pieceidx) throws Exception {
-        if (pieceidx == 1) {
+        if (pieceidx == -1) {
             PeerToPeerHelper.sendNotInterestedMessage(this.out);
         }
         if(pieceidx != -1) {
-            PeerToPeerHelper.sendRequestMessage(this.out, this.remotePeer);
+            PeerToPeerHelper.sendRequestMessage(this.out, this.remotePeer, pieceidx);
             this.downloadInitTime = System.nanoTime();
             this.checkFlag = true;
         }
