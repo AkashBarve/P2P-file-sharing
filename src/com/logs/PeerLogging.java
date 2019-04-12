@@ -35,7 +35,7 @@ public class PeerLogging {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //logHandler.setLevel(Level.parse("INFO"));
+        logHandler.setLevel(Level.parse("INFO"));
         logHandler.setFormatter(new SimpleFormatter());
         PeerLogger.addHandler(logHandler);
         this.peerID = peerID;

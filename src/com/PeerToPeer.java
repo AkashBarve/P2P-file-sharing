@@ -18,6 +18,9 @@ public class PeerToPeer {
     private String header;
     private String zeroBits;
     private int peerID;
+    Long downloadInitTime;
+    boolean communicationFlag;
+    boolean checkFlag;
 
     public PeerToPeer(Socket socket, RemotePeer remotePeer) {
         this.socket = socket;
@@ -93,7 +96,7 @@ public class PeerToPeer {
 
     public void startCommunication() throws Exception {
         Message message;
-        boolean communicationFlag = true;
+        communicationFlag = true;
 
         if(Peer.startInstance().getBitfieldArray().isEmpty() == false) {
             System.out.println("hello folks");
@@ -114,6 +117,8 @@ public class PeerToPeer {
                     break;
                 case (byte) 1:
                     // Unchoke
+                    int pieceidx = PeerToPeerHelper.getPieceIndex(remotePeer);
+                    Unchoke(pieceidx);
                     break;
                 case (byte) 2:
                     // Interested
@@ -146,6 +151,17 @@ public class PeerToPeer {
                 default:
                     break;
             }
+        }
+    }
+
+    private void Unchoke(int pieceidx) throws Exception {
+        if (pieceidx == 1) {
+            PeerToPeerHelper.sendNotInterestedMessage(this.out);
+        }
+        if(pieceidx != -1) {
+            PeerToPeerHelper.sendRequestMessage(this.out, this.remotePeer);
+            this.downloadInitTime = System.nanoTime();
+            this.checkFlag = true;
         }
     }
 

@@ -10,7 +10,7 @@ import java.util.BitSet;
 
 public class PeerToPeerHelper {
     public static Message sendBitFieldMessage(ObjectOutputStream out) throws Exception {
-        Message message = MessageBuilder.buildMessage((byte)5, Peer.startInstance().getBitfieldArray().toByteArray());
+        Message message = MessageBuilder.buildMessage((byte) 5, Peer.startInstance().getBitfieldArray().toByteArray());
         byte[] outMessage = MessageUtil.concatenateByteArrays(MessageUtil.concatenateByteToArray(message.getMessageLength(), message.getMessageType()), message.getMessagePayload());
         out.writeObject(message);
         out.flush();
@@ -50,10 +50,10 @@ public class PeerToPeerHelper {
 
     public static synchronized boolean isInterested(BitSet bs) {
         BitSet myBs = Peer.startInstance().getBitfieldArray();
-        if (Peer.startInstance().getHasFileOrNot()>0)
+        if (Peer.startInstance().getHasFileOrNot() > 0)
             return false;
-        for (int i=0; i<myBs.length(); i++) {
-            if(bs.get(i) && !myBs.get(i)){
+        for (int i = 0; i < myBs.length(); i++) {
+            if (bs.get(i) && !myBs.get(i)) {
                 return true;
             }
         }
@@ -72,5 +72,26 @@ public class PeerToPeerHelper {
         out.writeObject(message);
         out.flush();
         return message;
+    }
+
+    public static int getPieceIndex(RemotePeer remotePeer) {
+        BitSet remoteBits = remotePeer.getRemoteBitfieldArray();
+        BitSet peerbits = Peer.startInstance().getBitfieldArray();
+        if(peerbits.equals(remoteBits) || remoteBits.isEmpty() ) {
+            return 0;
+        }
+        BitSet temp = (BitSet)remoteBits.clone();
+        temp.xor(peerbits);
+        int firstMismatch = temp.length()-1;
+        if (firstMismatch == -1) {
+            return 0;
+        }
+        return peerbits.get(firstMismatch) ? 1 : -1;
+    }
+
+    public static void sendRequestMessage(ObjectOutputStream out, RemotePeer remotePeer) throws Exception {
+        Message message = MessageBuilder.buildMessage((byte) 6);
+        out.writeObject(message);
+        out.flush();
     }
 }
