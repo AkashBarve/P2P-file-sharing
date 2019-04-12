@@ -6,7 +6,8 @@ import com.message.MessageUtil;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.BitSet;
+import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class PeerToPeerHelper {
     public static Message sendBitFieldMessage(ObjectOutputStream out) throws Exception {
@@ -74,22 +75,26 @@ public class PeerToPeerHelper {
         return message;
     }
 
-    public static int getPieceIndex(RemotePeer remotePeer) {
+    public static int getPieceIndexToRequest(RemotePeer remotePeer) {
         BitSet remoteBits = remotePeer.getRemoteBitfieldArray();
         BitSet peerbits = Peer.startInstance().getBitfieldArray();
         if(peerbits.equals(remoteBits) || remoteBits.isEmpty() ) {
-            return 0;
+            return -1;
         }
-        BitSet temp = (BitSet)remoteBits.clone();
-        temp.xor(peerbits);
-        int firstMismatch = temp.length()-1;
-        if (firstMismatch == -1) {
-            return 0;
+        List<Integer> IndexOptionsToRequest = new ArrayList();
+        for(int i = 0; i < peerbits.size(); i++) {
+            boolean self = peerbits.get(i);
+            boolean remote = remoteBits.get(i);
+            if (self == false && remote == true) {
+                IndexOptionsToRequest.add(i);
+            }
         }
-        return peerbits.get(firstMismatch) ? 1 : -1;
+        int randomElementIndex = ThreadLocalRandom.current().nextInt(IndexOptionsToRequest.size()) % IndexOptionsToRequest.size();
+        return IndexOptionsToRequest.get(randomElementIndex);
+
     }
 
-    public static void sendRequestMessage(ObjectOutputStream out, RemotePeer remotePeer) throws Exception {
+    public static void sendRequestMessage(ObjectOutputStream out, RemotePeer remotePeer, int pieceidx) throws Exception {
         Message message = MessageBuilder.buildMessage((byte) 6);
         out.writeObject(message);
         out.flush();
