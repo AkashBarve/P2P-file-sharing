@@ -4,6 +4,7 @@ import com.message.Message;
 import com.message.MessageBuilder;
 import com.message.MessageUtil;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.BitSet;
@@ -91,6 +92,12 @@ public class PeerToPeerHelper {
 
     public static void sendRequestMessage(ObjectOutputStream out, RemotePeer remotePeer) throws Exception {
         Message message = MessageBuilder.buildMessage((byte) 6);
+        out.writeObject(message);
+        out.flush();
+    }
+
+    public static void sendPieceMessage(ObjectOutputStream out, int pieceIndex, ManageFile fileManager) throws Exception {
+        Message message = MessageBuilder.buildMessage((byte) 7, fileManager.getPartOfFile(pieceIndex));
         out.writeObject(message);
         out.flush();
     }

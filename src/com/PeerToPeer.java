@@ -21,6 +21,7 @@ public class PeerToPeer {
     Long downloadInitTime;
     boolean communicationFlag;
     boolean checkFlag;
+    ManageFile fileManager;
 
     public PeerToPeer(Socket socket, RemotePeer remotePeer) {
         this.socket = socket;
@@ -28,6 +29,7 @@ public class PeerToPeer {
         this.header = "P2PFILESHARINGPROJ";
         this.zeroBits = "0000000000";
         this.peerID = Peer.startInstance().getPeerID();
+        this.fileManager = new ManageFile();
     }
 
     public void initialize() {
@@ -132,7 +134,7 @@ public class PeerToPeer {
                     break;
                 case (byte) 4:
                     // Have
-                    this.handleHave(messagePayload);
+                    this.handleHaveMessage(messagePayload);
                     break;
                 case (byte) 5:
                     // BitField
@@ -146,6 +148,7 @@ public class PeerToPeer {
                     break;
                 case (byte) 6:
                     // Request
+                    this.handleRequestMessage(messagePayload);
                     break;
                 case (byte) 7:
                     // Piece
@@ -167,11 +170,18 @@ public class PeerToPeer {
         }
     }
 
-    private void handleHave(byte[] messagePayload) throws Exception {
+    private void handleHaveMessage(byte[] messagePayload) throws Exception {
         int pieceIndex = MessageUtil.byteArrayToInt(messagePayload);
         this.remotePeer.getRemoteBitFieldArray().set(pieceIndex);
         if (PeerToPeerHelper.isInterested(this.remotePeer.getRemoteBitFieldArray())) {
             PeerToPeerHelper.sendInterestedMessage(this.out);
+        }
+    }
+
+    private void handleRequestMessage(byte[] messagePayload) throws Exception {
+        int pieceIndex = MessageUtil.byteArrayToInt(messagePayload);
+        if (Peer.startInstance().interestedPeers.containsKey(this.remotePeer.getRemotePeerId())) {
+            PeerToPeerHelper.sendPieceMessage(this.out, pieceIndex, this.fileManager);
         }
     }
 }

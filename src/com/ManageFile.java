@@ -50,7 +50,7 @@ public class ManageFile {
 
     }
 
-    public byte[] acceptPartOfFile(int filePartNumber) {
+    public byte[] getPartOfFile(int filePartNumber) {
         if (fileSoFar.get(filePartNumber) == null)
             return pieceMap.get(filePartNumber);
         else
