@@ -1,6 +1,8 @@
 package com.message;
 
-public abstract class Message {
+import java.io.Serializable;
+
+public abstract class Message implements Serializable {
     private byte messageType;
     private byte[] messageLength, messagePayload;
 

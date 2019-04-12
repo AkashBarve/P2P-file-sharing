@@ -1,5 +1,6 @@
 package com;
 
+import java.rmi.Remote;
 import java.rmi.UnexpectedException;
 import java.util.BitSet;
 import java.util.Collections;
@@ -15,6 +16,7 @@ public class Peer {
     //private int noOfPiece
     Map<Integer, RemotePeer> peersStartedBefore = Collections.synchronizedMap(new LinkedHashMap<>());
     Map<Integer, RemotePeer> peersYetToStart = Collections.synchronizedMap(new LinkedHashMap<>());
+    Map<Integer, RemotePeer> interestedPeers = Collections.synchronizedMap(new LinkedHashMap<>());
     private int totalPieces;
     private volatile BitSet bitfieldArray = new BitSet(this.getTotalPieceCount());
     //private volatile Boolean[] bitfieldArray = new Boolean[this.getTotalPieceCount()];

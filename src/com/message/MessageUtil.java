@@ -3,6 +3,7 @@ package com.message;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.util.BitSet;
 
 public class MessageUtil {
     public static byte[] lengthAsByteArray(int len) {
@@ -44,6 +45,16 @@ public class MessageUtil {
             baAsInt += (b[i] & 0x000000FF) << shift;
         }
         return baAsInt;
+    }
+
+    public static BitSet byteArrayToBitSet(byte[] bArray) {
+        BitSet bs = new BitSet();
+        for (int i=0; i<8*bArray.length; i++) {
+            if ((bArray[(bArray.length-1) - i/8] & ((byte) 1 << (i%8)))>0) {
+                bs.set(i);
+            }
+        }
+        return bs;
     }
 
     public static byte[] readBytes(ObjectInputStream in, byte[] byteArray, int length) throws IOException {

@@ -33,4 +33,8 @@ public class MessageBuilder {
         }
         return message;
     }
+
+    public static Message buildMessage(byte messageType) throws Exception {
+        return buildMessage(messageType, null);
+    }
 }

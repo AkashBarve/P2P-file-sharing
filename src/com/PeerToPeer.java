@@ -1,6 +1,7 @@
 package com;
 
 import com.message.Message;
+import com.message.MessageUtil;
 
 import java.io.*;
 import java.net.Socket;
@@ -95,32 +96,45 @@ public class PeerToPeer {
         }
 
         while (true) {
-            byte[] lengthAndMessageType = new byte[5];
-            this.in.read(lengthAndMessageType);
-            byte messageType = lengthAndMessageType[4];
-
-            byte[] incomingMessagePayload = PeerToPeerHelper.getMessage(this.in);
+            Message incomingMessage = PeerToPeerHelper.getMessage(this.in);
+            byte messageType = incomingMessage.getMessageType();
+            byte[] messagePayload = incomingMessage.getMessagePayload();
 
             switch (messageType) {
                 case (byte) 0:
+                    // Choke
                     // don't do anything
                     break;
                 case (byte) 1:
-//                    BitSet remoteBS = remotePeer.get
-                    int pieceIndex;
-
+                    // Unchoke
                     break;
                 case (byte) 2:
+                    // Interested
+                    Peer.startInstance().interestedPeers.putIfAbsent(remotePeer.getRemotePeerId(), remotePeer);
                     break;
                 case (byte) 3:
+                    // Not Interested
+                    if (Peer.startInstance().interestedPeers.containsKey(remotePeer.getRemotePeerId())) {
+                        Peer.startInstance().interestedPeers.remove(remotePeer.getRemotePeerId());
+                    }
                     break;
                 case (byte) 4:
+                    // Have
                     break;
                 case (byte) 5:
+                    // BitField
+                    BitSet bitSet = MessageUtil.byteArrayToBitSet(messagePayload);
+                    if (PeerToPeerHelper.isInterested(bitSet)) {
+                        message = PeerToPeerHelper.sendInterestedMessage(this.out);
+                    } else {
+                        message = PeerToPeerHelper.sendNotInterestedMessage(this.out);
+                    }
                     break;
                 case (byte) 6:
+                    // Request
                     break;
                 case (byte) 7:
+                    // Piece
                     break;
                 default:
                     break;
