@@ -132,10 +132,12 @@ public class PeerToPeer {
                     break;
                 case (byte) 4:
                     // Have
+                    this.handleHave(messagePayload);
                     break;
                 case (byte) 5:
                     // BitField
                     BitSet bitSet = MessageUtil.byteArrayToBitSet(messagePayload);
+                    this.remotePeer.setRemotePeerBitFieldArray(bitSet);
                     if (PeerToPeerHelper.isInterested(bitSet)) {
                         message = PeerToPeerHelper.sendInterestedMessage(this.out);
                     } else {
@@ -165,5 +167,11 @@ public class PeerToPeer {
         }
     }
 
-
+    private void handleHave(byte[] messagePayload) throws Exception {
+        int pieceIndex = MessageUtil.byteArrayToInt(messagePayload);
+        this.remotePeer.getRemoteBitFieldArray().set(pieceIndex);
+        if (PeerToPeerHelper.isInterested(this.remotePeer.getRemoteBitFieldArray())) {
+            PeerToPeerHelper.sendInterestedMessage(this.out);
+        }
+    }
 }

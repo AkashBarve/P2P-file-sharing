@@ -39,7 +39,11 @@ public class RemotePeer {
         return hostName;
     }
 
-    public BitSet getRemoteBitfieldArray() {
-        return getRemoteBitfieldArray();
+    public BitSet getRemoteBitFieldArray() {
+        return this.remotePeerBitFieldArray;
+    }
+
+    public void setRemotePeerBitFieldArray(BitSet bitSet) {
+        this.remotePeerBitFieldArray = (BitSet) bitSet.clone();
     }
 }
