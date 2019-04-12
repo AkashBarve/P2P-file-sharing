@@ -1,6 +1,9 @@
 package com;
 
 import java.rmi.Remote;
+//import com.logs.Logger;
+import com.logs.PeerLogging;
+
 import java.rmi.UnexpectedException;
 import java.util.BitSet;
 import java.util.Collections;
@@ -30,6 +33,7 @@ public class Peer {
         }
         return peer;
     }
+    PeerLogging peerLogger = new PeerLogging();
 
     public void setPeerID(int peerID) {
         this.peerID = peerID;
@@ -82,6 +86,11 @@ public class Peer {
 
     private void setBitField(int i) {
         this.bitfieldArray.set(i);
+    }
+
+    public void initLogger(int peerID) {
+        PeerLogging logger = new PeerLogging();
+        logger.createLogger(peerID);
     }
 
     public BitSet getBitfieldArray() {

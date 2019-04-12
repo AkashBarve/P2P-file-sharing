@@ -1,5 +1,6 @@
 package com;
 
+import com.logs.PeerLogging;
 import com.message.Message;
 import com.message.MessageUtil;
 
@@ -39,6 +40,7 @@ public class PeerToPeer {
         }
        try {
            sendHandShake(this.out);
+           Peer.startInstance().peerLogger.logMakesConnectionTo(peerID, remotePeer.getRemotePeerId());
        }
        catch (IOException e) {
            System.out.println("Error in sending error message");
@@ -46,6 +48,7 @@ public class PeerToPeer {
         try {
             if(receiveHandshake(this.in)) {
                 System.out.println("Sucessfull handhshake");
+                Peer.startInstance().peerLogger.logIsConnectedFrom(peerID, remotePeer.getRemotePeerId());
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -90,20 +93,24 @@ public class PeerToPeer {
 
     public void startCommunication() throws Exception {
         Message message;
+        boolean communicationFlag = true;
 
-        if(!Peer.startInstance().getBitfieldArray().isEmpty()) {
+        if(Peer.startInstance().getBitfieldArray().isEmpty() == false) {
+            System.out.println("hello folks");
             message = PeerToPeerHelper.sendBitFieldMessage(this.out);
         }
 
-        while (true) {
+        while (communicationFlag) {
             Message incomingMessage = PeerToPeerHelper.getMessage(this.in);
             byte messageType = incomingMessage.getMessageType();
             byte[] messagePayload = incomingMessage.getMessagePayload();
 
             switch (messageType) {
                 case (byte) 0:
-                    // Choke
-                    // don't do anything
+                    while (this.in.available() == 0) {
+                        // Choke
+                        // don't do anything
+                    }
                     break;
                 case (byte) 1:
                     // Unchoke
