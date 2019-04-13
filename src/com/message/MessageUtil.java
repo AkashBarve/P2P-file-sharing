@@ -73,4 +73,10 @@ public class MessageUtil {
         }
         return byteArray;
     }
+
+    public static byte[] removePieceIndex (byte[] payload) {
+        byte[] piece = new byte[payload.length - 4];
+        System.arraycopy(payload, 4, piece, 0, payload.length - 4);
+        return piece;
+    }
 }

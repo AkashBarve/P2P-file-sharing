@@ -20,6 +20,7 @@ public class Peer {
     Map<Integer, RemotePeer> peersStartedBefore = Collections.synchronizedMap(new LinkedHashMap<>());
     Map<Integer, RemotePeer> peersYetToStart = Collections.synchronizedMap(new LinkedHashMap<>());
     Map<Integer, RemotePeer> interestedPeers = Collections.synchronizedMap(new LinkedHashMap<>());
+    Map<Integer, RemotePeer> allPeers = Collections.synchronizedMap(new LinkedHashMap<>());
     private int totalPieces;
     private volatile BitSet bitfieldArray = new BitSet(this.getTotalPieceCount());
     //private volatile Boolean[] bitfieldArray = new Boolean[this.getTotalPieceCount()];
@@ -84,7 +85,7 @@ public class Peer {
         System.out.println("Hello" + bitfieldArray);
     }
 
-    private void setBitField(int i) {
+    public void setBitField(int i) {
         this.bitfieldArray.set(i);
     }
 
@@ -93,7 +94,7 @@ public class Peer {
         logger.createLogger(peerID);
     }
 
-    public BitSet getBitfieldArray() {
+    public BitSet getBitFieldArray() {
         return this.bitfieldArray;
     }
 }

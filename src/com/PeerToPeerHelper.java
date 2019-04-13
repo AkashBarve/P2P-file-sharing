@@ -12,7 +12,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class PeerToPeerHelper {
     public static Message sendBitFieldMessage(ObjectOutputStream out) throws Exception {
-        Message message = MessageBuilder.buildMessage((byte) 5, Peer.startInstance().getBitfieldArray().toByteArray());
+        Message message = MessageBuilder.buildMessage((byte) 5, Peer.startInstance().getBitFieldArray().toByteArray());
         byte[] outMessage = MessageUtil.concatenateByteArrays(MessageUtil.concatenateByteToArray(message.getMessageLength(), message.getMessageType()), message.getMessagePayload());
         out.writeObject(message);
         out.flush();
@@ -51,7 +51,7 @@ public class PeerToPeerHelper {
     }
 
     public static synchronized boolean isInterested(BitSet bs) {
-        BitSet myBs = Peer.startInstance().getBitfieldArray();
+        BitSet myBs = Peer.startInstance().getBitFieldArray();
         if (Peer.startInstance().getHasFileOrNot() > 0)
             return false;
         for (int i = 0; i < myBs.length(); i++) {
@@ -78,7 +78,7 @@ public class PeerToPeerHelper {
 
     public static int getPieceIndexToRequest(RemotePeer remotePeer) {
         BitSet remoteBits = remotePeer.getRemoteBitFieldArray();
-        BitSet peerbits = Peer.startInstance().getBitfieldArray();
+        BitSet peerbits = Peer.startInstance().getBitFieldArray();
         if(peerbits.equals(remoteBits) || remoteBits.isEmpty() ) {
             return -1;
         }
@@ -95,14 +95,26 @@ public class PeerToPeerHelper {
 
     }
 
-    public static void sendRequestMessage(ObjectOutputStream out, RemotePeer remotePeer, int pieceidx) throws Exception {
-        Message message = MessageBuilder.buildMessage((byte) 6);
+    public static void sendRequestMessage(ObjectOutputStream out, int pieceIndex) throws Exception {
+        Message message = MessageBuilder.buildMessage((byte) 6, MessageUtil.intToByteArray(pieceIndex));
         out.writeObject(message);
         out.flush();
     }
 
     public static void sendPieceMessage(ObjectOutputStream out, ManageFile fileManager, int pieceIndex, byte[] pieceIndexByteArray) throws Exception {
         Message message = MessageBuilder.buildMessage((byte) 7, MessageUtil.concatenateByteArrays(pieceIndexByteArray, fileManager.getPartOfFile(pieceIndex)));
+        out.writeObject(message);
+        out.flush();
+    }
+
+    public static void broadcastHaveMessage(byte[] pieceIndex) throws Exception {
+        for (RemotePeer rp : Peer.startInstance().allPeers.values()) {
+            sendHaveMessage(rp.OutputStream, pieceIndex);
+        }
+    }
+
+    private static void sendHaveMessage(ObjectOutputStream out, byte[] pieceIndex) throws Exception {
+        Message message = MessageBuilder.buildMessage((byte) 3, pieceIndex);
         out.writeObject(message);
         out.flush();
     }
