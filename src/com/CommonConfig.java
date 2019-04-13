@@ -26,12 +26,12 @@ public class CommonConfig {
                 String s1[] = s.split(" ");
                 common_config_details.put(s1[0], s1[1]);
             }
-            Integer NumberOfPreferredNeighbors = Integer.parseInt(common_config_details.get("NumberOfPreferredNeighbors"));
-            Integer UnchokingInterval = Integer.parseInt(common_config_details.get("UnchokingInterval"));
-            Integer OptimisticUnchokingInterval = Integer.parseInt(common_config_details.get("OptimisticUnchokingInterval"));
+            NumberOfPreferredNeighbors = Integer.parseInt(common_config_details.get("NumberOfPreferredNeighbors"));
+            UnchokingInterval = Integer.parseInt(common_config_details.get("UnchokingInterval"));
+            OptimisticUnchokingInterval = Integer.parseInt(common_config_details.get("OptimisticUnchokingInterval"));
             Filename = common_config_details.get("FileName");
-            Integer FileSize = Integer.parseInt(common_config_details.get("FileSize"));
-            Integer PieceSize = Integer.parseInt(common_config_details.get("PieceSize"));
+            FileSize = Integer.parseInt(common_config_details.get("FileSize"));
+            PieceSize = Integer.parseInt(common_config_details.get("PieceSize"));
             peer.TotalPieces(FileSize, PieceSize);
             br.close();
         }

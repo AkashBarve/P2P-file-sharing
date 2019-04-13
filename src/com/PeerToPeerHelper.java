@@ -12,7 +12,9 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class PeerToPeerHelper {
     public static Message sendBitFieldMessage(ObjectOutputStream out) throws Exception {
-        Message message = MessageBuilder.buildMessage((byte) 5, Peer.startInstance().getBitFieldArray().toByteArray());
+        byte[] ba = Peer.startInstance().getBitFieldArray().toByteArray();
+        System.out.println("ba: "+ba);
+        Message message = MessageBuilder.buildMessage((byte) 5, ba);
         byte[] outMessage = MessageUtil.concatenateByteArrays(MessageUtil.concatenateByteToArray(message.getMessageLength(), message.getMessageType()), message.getMessagePayload());
         out.writeObject(message);
         out.flush();
@@ -52,9 +54,10 @@ public class PeerToPeerHelper {
 
     public static synchronized boolean isInterested(BitSet bs) {
         BitSet myBs = Peer.startInstance().getBitFieldArray();
+        System.out.println("mybs length "+myBs.length());
         if (Peer.startInstance().getHasFileOrNot() > 0)
             return false;
-        for (int i = 0; i < myBs.length(); i++) {
+        for (int i = 0; i < bs.length(); i++) {
             if (bs.get(i) && !myBs.get(i)) {
                 return true;
             }

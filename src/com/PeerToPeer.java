@@ -103,12 +103,16 @@ public class PeerToPeer {
         if(Peer.startInstance().getBitFieldArray().isEmpty() == false) {
             System.out.println("hello folks");
             message = PeerToPeerHelper.sendBitFieldMessage(this.out);
+            for( int i=0; i<Peer.startInstance().getBitFieldArray().length(); i++ ){
+                System.out.println("bf: "+Peer.startInstance().getBitFieldArray().get(i));
+            }
         }
 
         while (communicationFlag) {
             Message incomingMessage = PeerToPeerHelper.getMessage(this.in);
             byte messageType = incomingMessage.getMessageType();
             byte[] messagePayload = incomingMessage.getMessagePayload();
+            System.out.println("got message");
 
             switch (messageType) {
                 case (byte) 0:
@@ -125,6 +129,9 @@ public class PeerToPeer {
                 case (byte) 2:
                     // Interested
                     Peer.startInstance().interestedPeers.putIfAbsent(remotePeer.getRemotePeerId(), remotePeer);
+                    for(RemotePeer rp: Peer.startInstance().interestedPeers.values()){
+                        System.out.println("rp id: "+rp.getRemotePeerId());
+                    }
                     break;
                 case (byte) 3:
                     // Not Interested
@@ -138,10 +145,16 @@ public class PeerToPeer {
                     break;
                 case (byte) 5:
                     // BitField
-                    BitSet bitSet = MessageUtil.byteArrayToBitSet(messagePayload);
+                    System.out.println("got bitfield"+ messagePayload);
+                    BitSet bitSet = BitSet.valueOf(messagePayload);
+                    for(int i=0; i<bitSet.length(); i++ ){
+                        System.out.println("print bf: "+bitSet.get(i));
+                    }
                     this.remotePeer.setRemotePeerBitFieldArray(bitSet);
                     if (PeerToPeerHelper.isInterested(bitSet)) {
                         message = PeerToPeerHelper.sendInterestedMessage(this.out);
+                        Unchoke(0);
+                        System.out.println("got bitfield, sending interested");
                     } else {
                         message = PeerToPeerHelper.sendNotInterestedMessage(this.out);
                     }
@@ -181,6 +194,7 @@ public class PeerToPeer {
 
     private void handleRequestMessage(byte[] messagePayload) throws Exception {
         int pieceIndex = MessageUtil.byteArrayToInt(messagePayload);
+        System.out.println("received request: "+pieceIndex);
         if (Peer.startInstance().interestedPeers.containsKey(this.remotePeer.getRemotePeerId())) {
             PeerToPeerHelper.sendPieceMessage(this.out, this.fileManager, pieceIndex, messagePayload);
         }
@@ -202,6 +216,11 @@ public class PeerToPeer {
         }
 
         int newPieceIndex = PeerToPeerHelper.getPieceIndexToRequest(this.remotePeer);
-        PeerToPeerHelper.sendRequestMessage(this.out, newPieceIndex);
+        if(newPieceIndex!=-1)
+            PeerToPeerHelper.sendRequestMessage(this.out, newPieceIndex);
+        else {
+            System.out.println("merging");
+            this.fileManager.mergefiles();
+        }
     }
 }

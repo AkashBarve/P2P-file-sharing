@@ -32,7 +32,6 @@ public class ManageFile {
             fileSize = CommonConfig.getFileSize();
             remainingFileSize = fileSize;
             while (fileSize > 0) {
-                System.out.println("I'm inside");
                 if (remainingFileSize < pieceSize) {
                     filePiece = new byte[remainingFileSize];
                 } else {
