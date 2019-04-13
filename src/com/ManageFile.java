@@ -13,7 +13,7 @@ import java.util.TreeMap;
 
 import static com.CommonConfig.getFileName;
 import static com.CommonConfig.getFileSize;
-//import com.messages.Message;
+import com.PeerToPeer;
 //import com.messages.MessageUtil;
 
 public class ManageFile {
@@ -57,6 +57,7 @@ public class ManageFile {
         else
             return fileSoFar.get(filePartNumber);
     }
+
 
     public void receivePartOfFile(int partNumber, byte[] payload) {
         byte[] piece = MessageUtil.removePieceIndex(payload);
