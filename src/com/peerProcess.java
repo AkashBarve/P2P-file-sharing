@@ -2,6 +2,8 @@ package com;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -61,7 +63,23 @@ public class peerProcess {
                 Client client = new Client(peer.peersStartedBefore);
                 new Thread(client).start(); }, 1, TimeUnit.MILLISECONDS);
 
+            TimerTask unchokePreferredPeersTask = new TimerTask() {
+                @Override
+                public void run() {
+                    peer.unchokePreferredPeers();
+                }
+            };
 
+            (new Timer()).scheduleAtFixedRate(unchokePreferredPeersTask, (long) 1000*CommonConfig.getUnchokingInterval(), (long) 1000*CommonConfig.getUnchokingInterval());
+
+            TimerTask optimisticallyUnchokeRandomPeerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    peer.optimisticallyUnchokeRandomPeer();
+                }
+            };
+
+            (new Timer()).scheduleAtFixedRate(optimisticallyUnchokeRandomPeerTask, (long) 1000*CommonConfig.getOptimisticUnchokingInterval(), (long) 1000*CommonConfig.getOptimisticUnchokingInterval());
 
         }
         else {
