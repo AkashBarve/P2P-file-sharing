@@ -21,6 +21,8 @@ public class Peer {
     Map<Integer, RemotePeer> peersYetToStart = Collections.synchronizedMap(new LinkedHashMap<>());
     Map<Integer, RemotePeer> interestedPeers = Collections.synchronizedMap(new LinkedHashMap<>());
     Map<Integer, RemotePeer> allPeers = Collections.synchronizedMap(new LinkedHashMap<>());
+    Map<Integer, RemotePeer> chokedPeers = Collections.synchronizedMap(new LinkedHashMap<>());
+    Map<Integer, RemotePeer> unchokedPeers = Collections.synchronizedMap(new LinkedHashMap<>());
     private int totalPieces;
     private volatile BitSet bitfieldArray = new BitSet(this.getTotalPieceCount());
     //private volatile Boolean[] bitfieldArray = new Boolean[this.getTotalPieceCount()];
@@ -96,5 +98,13 @@ public class Peer {
 
     public BitSet getBitFieldArray() {
         return this.bitfieldArray;
+    }
+
+    public void unchokePreferredPeers() {
+        // Unchoke k willingPeers based onl
+    }
+
+    public void optimisticallyUnchokeRandomPeer() {
+        // Unchoke 1 chokedPeer randomly
     }
 }
