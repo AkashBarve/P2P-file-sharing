@@ -47,15 +47,16 @@ public class MessageUtil {
         return baAsInt;
     }
 
-    public static BitSet byteArrayToBitSet(byte[] bArray) {
+    /*public static BitSet byteArrayToBitSet(byte[] bArray) {
         BitSet bs = new BitSet();
         for (int i=0; i<8*bArray.length; i++) {
-            if ((bArray[(bArray.length-1) - i/8] & ((byte) 1 << (i%8)))>0) {
+            if ((bArray[(bArray.length-1) - i/8] & (1 << (i%8)))>0) {
+                System.out.println(i);
                 bs.set(i);
             }
         }
         return bs;
-    }
+    }*/
 
     public static byte[] readBytes(ObjectInputStream in, byte[] byteArray, int length) throws IOException {
         int ilength = length;

@@ -36,7 +36,7 @@ public class peerProcess {
                 }
                 catch(NullPointerException e)
                 {
-                    System.out.print("NullPointerException Caught");
+                    throw new RuntimeException(e);
                 }
             }
             else {
