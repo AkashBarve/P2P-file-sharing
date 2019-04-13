@@ -20,12 +20,12 @@ public abstract class Message implements Serializable {
 
     public Message(byte messageType) {
         this.messageType = messageType;
-        this.messageLength = MessageUtil.lengthAsByteArray(1);
+        this.messageLength = MessageUtil.intToByteArray(1);
     }
 
     public Message(byte messageType, byte[] messagePayload) {
         this.messageType = messageType;
-        this.messageLength = MessageUtil.lengthAsByteArray(messagePayload.length + 1);
+        this.messageLength = MessageUtil.intToByteArray(messagePayload.length + 1);
         this.messagePayload = messagePayload;
     }
 }

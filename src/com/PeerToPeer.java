@@ -100,7 +100,7 @@ public class PeerToPeer {
         Message message;
         communicationFlag = true;
 
-        if(Peer.startInstance().getBitfieldArray().isEmpty() == false) {
+        if(Peer.startInstance().getBitFieldArray().isEmpty() == false) {
             System.out.println("hello folks");
             message = PeerToPeerHelper.sendBitFieldMessage(this.out);
         }
@@ -152,6 +152,7 @@ public class PeerToPeer {
                     break;
                 case (byte) 7:
                     // Piece
+                    this.handlePieceMessage(messagePayload);
                     break;
                 default:
                     break;
@@ -164,7 +165,7 @@ public class PeerToPeer {
             PeerToPeerHelper.sendNotInterestedMessage(this.out);
         }
         if(pieceidx != -1) {
-            PeerToPeerHelper.sendRequestMessage(this.out, this.remotePeer, pieceidx);
+            PeerToPeerHelper.sendRequestMessage(this.out, pieceidx);
             this.downloadInitTime = System.nanoTime();
             this.checkFlag = true;
         }
@@ -181,7 +182,26 @@ public class PeerToPeer {
     private void handleRequestMessage(byte[] messagePayload) throws Exception {
         int pieceIndex = MessageUtil.byteArrayToInt(messagePayload);
         if (Peer.startInstance().interestedPeers.containsKey(this.remotePeer.getRemotePeerId())) {
-            PeerToPeerHelper.sendPieceMessage(this.out, pieceIndex, this.fileManager);
+            PeerToPeerHelper.sendPieceMessage(this.out, this.fileManager, pieceIndex, messagePayload);
         }
+    }
+
+    private void handlePieceMessage(byte[] messagePayload) throws Exception {
+        // Detach first 4 bytes -> pieceIndex
+        byte[] pieceIndexByteArray = new byte[4];
+        for (int i=0; i<4; i++) {
+            pieceIndexByteArray[i] = messagePayload[i];
+        }
+
+        int pieceIndex = MessageUtil.byteArrayToInt(pieceIndexByteArray);
+        if (!Peer.startInstance().getBitFieldArray().get(pieceIndex)) {
+            this.fileManager.receivePartOfFile(pieceIndex, MessageUtil.removePieceIndex(messagePayload));
+            Peer.startInstance().setBitField(pieceIndex);
+
+            PeerToPeerHelper.broadcastHaveMessage(pieceIndexByteArray);
+        }
+
+        int newPieceIndex = PeerToPeerHelper.getPieceIndexToRequest(this.remotePeer);
+        PeerToPeerHelper.sendRequestMessage(this.out, newPieceIndex);
     }
 }

@@ -1,5 +1,7 @@
 package com;
 
+import com.message.MessageUtil;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -57,11 +59,10 @@ public class ManageFile {
             return fileSoFar.get(filePartNumber);
     }
 
-    //public void receivePartOfFile(int filePart, Message message) {
-      //  byte[] payLoadWithIndex = message.getPayloadOfMessage();
-        //byte[] payLoad = MessageUtil.removeFourBytes(payLoadWithIndex);
-        //fileSoFar.put(filePart, payLoad);
-    //}
+    public void receivePartOfFile(int partNumber, byte[] payload) {
+        byte[] piece = MessageUtil.removePieceIndex(payload);
+        fileSoFar.put(partNumber, piece);
+    }
 
     public void mergefiles() throws IOException {
         FileOutputStream fileOutputStream;
