@@ -199,9 +199,9 @@ public class PeerToPeer {
             Peer.startInstance().setBitField(pieceIndex);
 
             PeerToPeerHelper.broadcastHaveMessage(pieceIndexByteArray);
-
-            int newPieceIndex = 4; // Write function for this
-            PeerToPeerHelper.sendRequestMessage(this.out, newPieceIndex);
         }
+
+        int newPieceIndex = PeerToPeerHelper.getPieceIndexToRequest(this.remotePeer);
+        PeerToPeerHelper.sendRequestMessage(this.out, newPieceIndex);
     }
 }
