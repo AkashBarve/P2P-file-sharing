@@ -53,6 +53,7 @@ public class PeerToPeer {
         try {
             if(receiveHandshake(this.in)) {
                 System.out.println("Sucessfull handhshake");
+                Peer.startInstance().allPeers.putIfAbsent(remotePeer.getRemotePeerId(), remotePeer);
                 Peer.startInstance().getLogger().logIsConnectedFrom(peerID, remotePeer.getRemotePeerId());
             }
         } catch (IOException e) {
