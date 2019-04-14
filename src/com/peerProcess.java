@@ -22,6 +22,7 @@ public class peerProcess {
             int peerID = Integer.parseInt(args[0]);
             peer.initLogger(peerID);
             CommonConfig(COMMON_CONFIG, peer);
+            peer.setPreferredNeigborCount(CommonConfig.getNumberOfPreferredNeighbors());
             PeerConfig(PEER_CONFIG, peerID, peer);
             System.out.println("debug" + peer.getHasFileOrNot());
             if (peer.getHasFileOrNot() == 1) {
