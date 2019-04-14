@@ -153,7 +153,6 @@ public class PeerToPeer {
                     this.remotePeer.setRemotePeerBitFieldArray(bitSet);
                     if (PeerToPeerHelper.isInterested(bitSet)) {
                         message = PeerToPeerHelper.sendInterestedMessage(this.out);
-                        Unchoke(0);
                         System.out.println("got bitfield, sending interested");
                     } else {
                         message = PeerToPeerHelper.sendNotInterestedMessage(this.out);
