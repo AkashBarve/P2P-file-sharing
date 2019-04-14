@@ -104,11 +104,13 @@ public class Peer {
     }
 
     public void unchokePreferredPeers() {
+        System.out.println("doing unchoke");
         if (!interestedPeers.isEmpty()) {
+            System.out.println("inside upp");
             int k = NoOfPreferredNeighbors;
             Set<Integer> temp = new HashSet<>();
             List<Integer> keys = new ArrayList<>(interestedPeers.keySet());
-            while(temp.size() < k+1) {
+            for(int i=0; (i<interestedPeers.size()) && (temp.size() <= k); i++) {
                 int randomIdx = ThreadLocalRandom.current().nextInt(interestedPeers.size());
                 int randomPeer = keys.get(randomIdx);
                 temp.add(randomPeer);
@@ -119,6 +121,7 @@ public class Peer {
                         RemotePeer rm = interestedPeers.get(key);
                         try {
                             PeerToPeerHelper.sendChokeMessage(rm.OutputStream);
+                            System.out.println("sending choke");
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -135,6 +138,7 @@ public class Peer {
                         RemotePeer remPeer = PreferedPeers.get(p);
                         try {
                             PeerToPeerHelper.sendChokeMessage(remPeer.OutputStream);
+                            System.out.println("sending unchoke");
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
