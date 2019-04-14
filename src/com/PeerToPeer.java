@@ -105,7 +105,7 @@ public class PeerToPeer {
         Message message;
         communicationFlag = true;
 
-        if(Peer.startInstance().getBitFieldArray().isEmpty() == false) {
+        if(!Peer.startInstance().getBitFieldArray().isEmpty()) {
             System.out.println("hello folks");
             message = PeerToPeerHelper.sendBitFieldMessage(this.out);
             for( int i=0; i<Peer.startInstance().getBitFieldArray().length(); i++ ){

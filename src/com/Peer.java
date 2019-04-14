@@ -27,6 +27,7 @@ public class Peer {
     RemotePeer optimisticallyUnchokedPeer;
     private int totalPieces;
     private volatile BitSet bitfieldArray = new BitSet(this.getTotalPieceCount());
+    private BitSet FullBitSet = new BitSet(this.getTotalPieceCount());
     //private volatile Boolean[] bitfieldArray = new Boolean[this.getTotalPieceCount()];
     public static Peer startInstance() {
         if (peer == null) {
@@ -91,6 +92,9 @@ public class Peer {
 
     public void setBitField(int i) {
         this.bitfieldArray.set(i);
+        if(this.bitfieldArray.equals(FullBitSet)){
+            this.hasFileOrNot = 1;
+        }
     }
 
     public void initLogger(int peerID) {
@@ -104,6 +108,12 @@ public class Peer {
     public BitSet getBitFieldArray() {
         return this.bitfieldArray;
     }
+
+    public void setFullBitFieldArray() {
+        for(int i = 0; i < getTotalPieceCount(); i++) {
+            FullBitSet.set(i);
+        }
+    };
 
     public void unchokePreferredPeers() {
         System.out.println("doing unchoke");

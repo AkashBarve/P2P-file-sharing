@@ -30,6 +30,7 @@ public class peerProcess {
                     String filepath = System.getProperty("user.dir") + "/peer_" + Integer.toString(peerID) + "/" + Filename;
                     File f = new File(filepath);
                     peer.setBitFieldArray();
+                    peer.setFullBitFieldArray();
                     if (!f.exists()) {
                         throw new FileNotFoundException();
                     }
@@ -44,6 +45,7 @@ public class peerProcess {
                 }
             }
             else {
+                peer.setFullBitFieldArray();
                 try {
                     String filepath = System.getProperty("user.dir") + "/peer_" + Integer.toString(peerID);
                     File f = new File(filepath);
