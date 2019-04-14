@@ -20,6 +20,7 @@ public class peerProcess {
         if (args.length == 1) {
             peer = Peer.startInstance();
             int peerID = Integer.parseInt(args[0]);
+            peer.initLogger(peerID);
             CommonConfig(COMMON_CONFIG, peer);
             PeerConfig(PEER_CONFIG, peerID, peer);
             System.out.println("debug" + peer.getHasFileOrNot());

@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class CommonConfig {
     public static String Filename;
-    private static Integer NumberOfPreferredNeighbors;
+    public static Integer NumberOfPreferredNeighbors;
     private static Integer UnchokingInterval;
     private static Integer OptimisticUnchokingInterval;
     private static String FileName;
@@ -54,9 +54,9 @@ public class CommonConfig {
         return NumberOfPreferredNeighbors;
     }
 
-    public static void setNumberOfPreferredNeighbors(int numberOfPreferredNeighbors) {
-        NumberOfPreferredNeighbors = NumberOfPreferredNeighbors == null ? numberOfPreferredNeighbors : throw_();
-    }
+//    public void setNumberOfPreferredNeighbors() {
+//        this.NumberOfPreferredNeighbors = NumberOfPreferredNeighbors;
+//    }
 
     public static int getUnchokingInterval() {
         return UnchokingInterval;
