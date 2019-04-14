@@ -5,10 +5,8 @@ import java.rmi.Remote;
 import com.logs.PeerLogging;
 
 import java.rmi.UnexpectedException;
-import java.util.BitSet;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Peer {
     public static Peer peer;
@@ -23,6 +21,7 @@ public class Peer {
     Map<Integer, RemotePeer> allPeers = Collections.synchronizedMap(new LinkedHashMap<>());
     Map<Integer, RemotePeer> chokedPeers = Collections.synchronizedMap(new LinkedHashMap<>());
     Map<Integer, RemotePeer> unchokedPeers = Collections.synchronizedMap(new LinkedHashMap<>());
+    RemotePeer optimisticallyUnchokedPeer;
     private int totalPieces;
     private volatile BitSet bitfieldArray = new BitSet(this.getTotalPieceCount());
     //private volatile Boolean[] bitfieldArray = new Boolean[this.getTotalPieceCount()];
@@ -106,5 +105,17 @@ public class Peer {
 
     public void optimisticallyUnchokeRandomPeer() {
         // Unchoke 1 chokedPeer randomly
+        List<RemotePeer> interestedPeersList = new ArrayList<>(this.interestedPeers.values());
+        int randomPeerIndex = ThreadLocalRandom.current().nextInt(interestedPeersList.size());
+        this.optimisticallyUnchokedPeer = interestedPeersList.get(randomPeerIndex);
+
+        if (this.chokedPeers.containsKey(this.optimisticallyUnchokedPeer.getRemotePeerId())) {
+            try {
+                PeerToPeerHelper.sendUnchokeMessage(this.optimisticallyUnchokedPeer.OutputStream);
+                this.chokedPeers.remove(this.optimisticallyUnchokedPeer.getRemotePeerId());
+            } catch (Exception e) {
+                throw new RuntimeException("Could not send unchoke message", e);
+            }
+        }
     }
 }

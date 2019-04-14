@@ -121,4 +121,16 @@ public class PeerToPeerHelper {
         out.writeObject(message);
         out.flush();
     }
+
+    public static void sendUnchokeMessage(ObjectOutputStream out) throws Exception {
+        Message message = MessageBuilder.buildMessage((byte) 1);
+        out.writeObject(message);
+        out.flush();
+    }
+
+    public static void sendChokeMessage(ObjectOutputStream out) throws Exception {
+        Message message = MessageBuilder.buildMessage((byte) 0);
+        out.writeObject(message);
+        out.flush();
+    }
 }
