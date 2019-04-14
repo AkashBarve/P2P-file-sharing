@@ -86,16 +86,25 @@ public class PeerToPeerHelper {
             return -1;
         }
         List<Integer> IndexOptionsToRequest = new ArrayList();
-        for(int i = 0; i < peerbits.size(); i++) {
+        for(int i = 0; i < remoteBits.length(); i++) {
             boolean self = peerbits.get(i);
             boolean remote = remoteBits.get(i);
             if (self == false && remote == true) {
                 IndexOptionsToRequest.add(i);
             }
         }
-        int randomElementIndex = ThreadLocalRandom.current().nextInt(IndexOptionsToRequest.size()) % IndexOptionsToRequest.size();
-        return IndexOptionsToRequest.get(randomElementIndex);
-
+        for(int i=0; i<peerbits.length(); i++ ){
+            System.out.println("print my bf: "+peerbits.get(i));
+        }
+        for(int i=0; i<remoteBits.length(); i++ ){
+            System.out.println("print remote bf: "+remoteBits.get(i));
+        }
+        System.out.println("IndexOptionsToRequest.size(): "+IndexOptionsToRequest.size());
+        if(!IndexOptionsToRequest.isEmpty()) {
+            int randomElementIndex = ThreadLocalRandom.current().nextInt(IndexOptionsToRequest.size()) % IndexOptionsToRequest.size();
+            return IndexOptionsToRequest.get(randomElementIndex);
+        }
+        return -2;
     }
 
     public static void sendRequestMessage(ObjectOutputStream out, int pieceIndex) throws Exception {

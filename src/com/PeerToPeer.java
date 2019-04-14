@@ -45,7 +45,7 @@ public class PeerToPeer {
         }
        try {
            sendHandShake(this.out);
-           Peer.startInstance().peerLogger.logMakesConnectionTo(peerID, remotePeer.getRemotePeerId());
+           Peer.startInstance().getLogger().logMakesConnectionTo(peerID, remotePeer.getRemotePeerId());
        }
        catch (IOException e) {
            System.out.println("Error in sending error message");
@@ -53,7 +53,7 @@ public class PeerToPeer {
         try {
             if(receiveHandshake(this.in)) {
                 System.out.println("Sucessfull handhshake");
-                Peer.startInstance().peerLogger.logIsConnectedFrom(peerID, remotePeer.getRemotePeerId());
+                Peer.startInstance().getLogger().logIsConnectedFrom(peerID, remotePeer.getRemotePeerId());
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -116,15 +116,12 @@ public class PeerToPeer {
 
             switch (messageType) {
                 case (byte) 0:
-                    while (this.in.available() == 0) {
-                        // Choke
-                        // don't do anything
-                    }
+                    System.out.println("got choke");
                     break;
                 case (byte) 1:
                     // Unchoke
                     int pieceidx = PeerToPeerHelper.getPieceIndexToRequest(remotePeer);
-                    Unchoke(pieceidx);
+                    this.handleUnchokeMessage(pieceidx);
                     break;
                 case (byte) 2:
                     // Interested
@@ -145,19 +142,7 @@ public class PeerToPeer {
                     break;
                 case (byte) 5:
                     // BitField
-                    System.out.println("got bitfield"+ messagePayload);
-                    BitSet bitSet = BitSet.valueOf(messagePayload);
-                    for(int i=0; i<bitSet.length(); i++ ){
-                        System.out.println("print bf: "+bitSet.get(i));
-                    }
-                    this.remotePeer.setRemotePeerBitFieldArray(bitSet);
-                    if (PeerToPeerHelper.isInterested(bitSet)) {
-                        message = PeerToPeerHelper.sendInterestedMessage(this.out);
-                        Unchoke(0);
-                        System.out.println("got bitfield, sending interested");
-                    } else {
-                        message = PeerToPeerHelper.sendNotInterestedMessage(this.out);
-                    }
+                    this.handleBitFieldMessage(messagePayload);
                     break;
                 case (byte) 6:
                     // Request
@@ -173,7 +158,7 @@ public class PeerToPeer {
         }
     }
 
-    private void Unchoke(int pieceidx) throws Exception {
+    private void handleUnchokeMessage(int pieceidx) throws Exception {
         if (pieceidx == -1) {
             PeerToPeerHelper.sendNotInterestedMessage(this.out);
         }
@@ -189,6 +174,21 @@ public class PeerToPeer {
         this.remotePeer.getRemoteBitFieldArray().set(pieceIndex);
         if (PeerToPeerHelper.isInterested(this.remotePeer.getRemoteBitFieldArray())) {
             PeerToPeerHelper.sendInterestedMessage(this.out);
+        }
+    }
+
+    private void handleBitFieldMessage(byte[] messagePayload) throws Exception {
+        System.out.println("got bitfield"+ messagePayload);
+        BitSet bitSet = BitSet.valueOf(messagePayload);
+        for(int i=0; i<bitSet.length(); i++ ){
+            System.out.println("print bf: "+bitSet.get(i));
+        }
+        this.remotePeer.setRemotePeerBitFieldArray(bitSet);
+        if (PeerToPeerHelper.isInterested(bitSet)) {
+            PeerToPeerHelper.sendInterestedMessage(this.out);
+            System.out.println("got bitfield, sending interested");
+        } else {
+            PeerToPeerHelper.sendNotInterestedMessage(this.out);
         }
     }
 
@@ -216,11 +216,13 @@ public class PeerToPeer {
         }
 
         int newPieceIndex = PeerToPeerHelper.getPieceIndexToRequest(this.remotePeer);
-        if(newPieceIndex!=-1)
+        if(newPieceIndex>=-0)
             PeerToPeerHelper.sendRequestMessage(this.out, newPieceIndex);
-        else {
+        else if(newPieceIndex==-1) {
             System.out.println("merging");
             this.fileManager.mergefiles();
+        } else if(newPieceIndex==-2) {
+            PeerToPeerHelper.sendNotInterestedMessage(this.out);
         }
     }
 }
