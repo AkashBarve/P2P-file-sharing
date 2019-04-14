@@ -6,6 +6,7 @@ import com.logs.PeerLogging;
 
 import java.rmi.UnexpectedException;
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Peer {
     public static Peer peer;
@@ -21,6 +22,7 @@ public class Peer {
     Map<Integer, RemotePeer> allPeers = Collections.synchronizedMap(new LinkedHashMap<>());
     Map<Integer, RemotePeer> chokedPeers = Collections.synchronizedMap(new LinkedHashMap<>());
     Map<Integer, RemotePeer> PreferedPeers = Collections.synchronizedMap(new LinkedHashMap<>());
+    RemotePeer optimisticallyUnchokedPeer;
     private int totalPieces;
     private volatile BitSet bitfieldArray = new BitSet(this.getTotalPieceCount());
     //private volatile Boolean[] bitfieldArray = new Boolean[this.getTotalPieceCount()];
@@ -104,10 +106,10 @@ public class Peer {
     public void unchokePreferredPeers() {
         int k = NoOfPreferredNeighbors;
         Set<Integer> temp = new HashSet<>();
-        Random random = new Random();
         List<Integer> keys = new ArrayList<>(interestedPeers.keySet());
         while(temp.size() < k+1) {
-            int randomPeer = keys.get(random.nextInt(keys.size()));
+            int randomIdx = ThreadLocalRandom.current().nextInt(interestedPeers.size());
+            int randomPeer = keys.get(randomIdx);
             temp.add(randomPeer);
         }
         for(int p : PreferedPeers.keySet()) {
@@ -116,7 +118,11 @@ public class Peer {
             }
             else {
                 RemotePeer remPeer = PreferedPeers.get(p);
-                PeerToPeerHelper.sendChokeMessage(remPeer.OutputStream);
+                try {
+                    PeerToPeerHelper.sendChokeMessage(remPeer.OutputStream);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 //send choke message
                 chokedPeers.put(p, remPeer);
                 PreferedPeers.remove(p);
@@ -125,7 +131,11 @@ public class Peer {
         for (int i : temp) {
             RemotePeer remPeer1  = interestedPeers.get(i);
             //send unchoke message
-            PeerToPeerHelper.sendUnchokeMessage(remPeer1.OutputStream);
+            try {
+                PeerToPeerHelper.sendUnchokeMessage(remPeer1.OutputStream);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             PreferedPeers.put(i, remPeer1);
         }
         // Unchoke k willingPeers based onl
@@ -133,5 +143,17 @@ public class Peer {
 
     public void optimisticallyUnchokeRandomPeer() {
         // Unchoke 1 chokedPeer randomly
+        List<RemotePeer> interestedPeersList = new ArrayList<>(this.interestedPeers.values());
+        int randomPeerIndex = ThreadLocalRandom.current().nextInt(interestedPeersList.size());
+        this.optimisticallyUnchokedPeer = interestedPeersList.get(randomPeerIndex);
+
+        if (this.chokedPeers.containsKey(this.optimisticallyUnchokedPeer.getRemotePeerId())) {
+            try {
+                PeerToPeerHelper.sendUnchokeMessage(this.optimisticallyUnchokedPeer.OutputStream);
+                this.chokedPeers.remove(this.optimisticallyUnchokedPeer.getRemotePeerId());
+            } catch (Exception e) {
+                throw new RuntimeException("Could not send unchoke message", e);
+            }
+        }
     }
 }
