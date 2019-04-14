@@ -28,7 +28,7 @@ public class PeerLogging {
 
     public void createLogger(int peerID) {
 
-        String logFileName =  "log_peer_" + Integer.toString(peerID) + ".log";
+        String logFileName =  System.getProperty("user.dir") + "/log_peer_" + Integer.toString(peerID) + ".log";
         Handler logHandler = null;
         try {
             logHandler = new FileHandler(logFileName);

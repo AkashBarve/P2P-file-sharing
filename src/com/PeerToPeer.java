@@ -45,7 +45,7 @@ public class PeerToPeer {
         }
        try {
            sendHandShake(this.out);
-           Peer.startInstance().peerLogger.logMakesConnectionTo(peerID, remotePeer.getRemotePeerId());
+           Peer.startInstance().getLogger().logMakesConnectionTo(peerID, remotePeer.getRemotePeerId());
        }
        catch (IOException e) {
            System.out.println("Error in sending error message");
@@ -53,7 +53,7 @@ public class PeerToPeer {
         try {
             if(receiveHandshake(this.in)) {
                 System.out.println("Sucessfull handhshake");
-                Peer.startInstance().peerLogger.logIsConnectedFrom(peerID, remotePeer.getRemotePeerId());
+                Peer.startInstance().getLogger().logIsConnectedFrom(peerID, remotePeer.getRemotePeerId());
             }
         } catch (IOException e) {
             e.printStackTrace();

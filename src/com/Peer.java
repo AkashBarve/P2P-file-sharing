@@ -5,10 +5,7 @@ import java.rmi.Remote;
 import com.logs.PeerLogging;
 
 import java.rmi.UnexpectedException;
-import java.util.BitSet;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Peer {
     public static Peer peer;
@@ -16,13 +13,14 @@ public class Peer {
     private String hostName;
     private int portNo;
     private int hasFileOrNot;
+    private int NoOfPreferredNeighbors = CommonConfig.getNumberOfPreferredNeighbors();
     //private int noOfPiece
     Map<Integer, RemotePeer> peersStartedBefore = Collections.synchronizedMap(new LinkedHashMap<>());
     Map<Integer, RemotePeer> peersYetToStart = Collections.synchronizedMap(new LinkedHashMap<>());
     Map<Integer, RemotePeer> interestedPeers = Collections.synchronizedMap(new LinkedHashMap<>());
     Map<Integer, RemotePeer> allPeers = Collections.synchronizedMap(new LinkedHashMap<>());
     Map<Integer, RemotePeer> chokedPeers = Collections.synchronizedMap(new LinkedHashMap<>());
-    Map<Integer, RemotePeer> unchokedPeers = Collections.synchronizedMap(new LinkedHashMap<>());
+    Map<Integer, RemotePeer> PreferedPeers = Collections.synchronizedMap(new LinkedHashMap<>());
     private int totalPieces;
     private volatile BitSet bitfieldArray = new BitSet(this.getTotalPieceCount());
     //private volatile Boolean[] bitfieldArray = new Boolean[this.getTotalPieceCount()];
@@ -36,7 +34,7 @@ public class Peer {
         }
         return peer;
     }
-    PeerLogging peerLogger = new PeerLogging();
+    private PeerLogging logger;
 
     public void setPeerID(int peerID) {
         this.peerID = peerID;
@@ -92,8 +90,11 @@ public class Peer {
     }
 
     public void initLogger(int peerID) {
-        PeerLogging logger = new PeerLogging();
+        this.logger = new PeerLogging();
         logger.createLogger(peerID);
+    }
+    public PeerLogging getLogger() {
+        return logger;
     }
 
     public BitSet getBitFieldArray() {
@@ -101,6 +102,32 @@ public class Peer {
     }
 
     public void unchokePreferredPeers() {
+        int k = NoOfPreferredNeighbors;
+        Set<Integer> temp = new HashSet<>();
+        Random random = new Random();
+        List<Integer> keys = new ArrayList<>(interestedPeers.keySet());
+        while(temp.size() < k+1) {
+            int randomPeer = keys.get(random.nextInt(keys.size()));
+            temp.add(randomPeer);
+        }
+        for(int p : PreferedPeers.keySet()) {
+            if(temp.contains(p)) {
+                temp.remove(p);
+            }
+            else {
+                RemotePeer remPeer = PreferedPeers.get(p);
+                PeerToPeerHelper.sendChokeMessage(remPeer.OutputStream);
+                //send choke message
+                chokedPeers.put(p, remPeer);
+                PreferedPeers.remove(p);
+            }
+        }
+        for (int i : temp) {
+            RemotePeer remPeer1  = interestedPeers.get(i);
+            //send unchoke message
+            PeerToPeerHelper.sendUnchokeMessage(remPeer1.OutputStream);
+            PreferedPeers.put(i, remPeer1);
+        }
         // Unchoke k willingPeers based onl
     }
 
