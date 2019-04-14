@@ -3,6 +3,7 @@ package com;
 import java.rmi.Remote;
 //import com.logs.Logger;
 import com.logs.PeerLogging;
+import java.util.Comparator;
 
 import java.rmi.UnexpectedException;
 import java.util.*;
@@ -22,6 +23,7 @@ public class Peer {
     Map<Integer, RemotePeer> allPeers = Collections.synchronizedMap(new LinkedHashMap<>());
     Map<Integer, RemotePeer> chokedPeers = Collections.synchronizedMap(new LinkedHashMap<>());
     Map<Integer, RemotePeer> PreferedPeers = Collections.synchronizedMap(new LinkedHashMap<>());
+    Map<Integer, Double> downloadSpeeds = Collections.synchronizedMap(new LinkedHashMap<>());
     RemotePeer optimisticallyUnchokedPeer;
     private int totalPieces;
     private volatile BitSet bitfieldArray = new BitSet(this.getTotalPieceCount());
@@ -110,11 +112,26 @@ public class Peer {
             int k = NoOfPreferredNeighbors;
             Set<Integer> temp = new HashSet<>();
             List<Integer> keys = new ArrayList<>(interestedPeers.keySet());
-            for(int i=0; (i<interestedPeers.size()) && (temp.size() <= k); i++) {
+            LinkedHashMap<Integer, Double> downloadSpeedsSorted = new LinkedHashMap<>();
+            downloadSpeeds.entrySet()
+                    .stream()
+                    .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                    .forEachOrdered(x -> downloadSpeedsSorted.put(x.getKey(), x.getValue()));
+            List<Integer> tempIds = new ArrayList<>(downloadSpeedsSorted.keySet());
+            for(int i=0; (i<downloadSpeedsSorted.size()) && (temp.size() <= k); i++) {
+                temp.add(tempIds.get(i));
+            }
+
+            for(int i=0; (i<interestedPeers.size()) && (temp.size() <= k);) {
                 int randomIdx = ThreadLocalRandom.current().nextInt(interestedPeers.size());
                 int randomPeer = keys.get(randomIdx);
-                temp.add(randomPeer);
+                if(!temp.contains(randomPeer)) {
+                    temp.add(randomPeer);
+                    i++;
+                }
+
             }
+
             if (PreferedPeers.isEmpty()) {
                 for(int key : keys) {
                     if(!temp.contains(key) && optimisticallyUnchokedPeer.getRemotePeerId() != key) {

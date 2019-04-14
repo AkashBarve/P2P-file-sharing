@@ -22,6 +22,10 @@ public class PeerToPeer {
     boolean communicationFlag;
     boolean checkFlag;
     ManageFile fileManager;
+    private Long downloadSpeed;
+    private Long initTime;
+    private Long endTime;
+    private Long pieceCount = 0l;
 
     public PeerToPeer(Socket socket, RemotePeer remotePeer) {
         this.socket = socket;
@@ -195,13 +199,17 @@ public class PeerToPeer {
 
     private void handleRequestMessage(byte[] messagePayload) throws Exception {
         int pieceIndex = MessageUtil.byteArrayToInt(messagePayload);
-        System.out.println("received request: "+pieceIndex);
+        System.out.println("received request: "+ pieceIndex);
         if (Peer.startInstance().interestedPeers.containsKey(this.remotePeer.getRemotePeerId())) {
             PeerToPeerHelper.sendPieceMessage(this.out, this.fileManager, pieceIndex, messagePayload);
         }
     }
 
     private void handlePieceMessage(byte[] messagePayload) throws Exception {
+        endTime = System.nanoTime();
+        downloadSpeed = ((pieceCount*downloadSpeed) + (messagePayload.length/(endTime-initTime)))/(pieceCount+1);
+        pieceCount++;
+        Peer.startInstance().downloadSpeeds.put(remotePeer.getRemotePeerId(), (double)downloadSpeed);
         // Detach first 4 bytes -> pieceIndex
         byte[] pieceIndexByteArray = new byte[4];
         for (int i=0; i<4; i++) {
@@ -218,12 +226,18 @@ public class PeerToPeer {
 
         int newPieceIndex = PeerToPeerHelper.getPieceIndexToRequest(this.remotePeer);
         if(newPieceIndex>=-0)
-            PeerToPeerHelper.sendRequestMessage(this.out, newPieceIndex);
+            sendRequestAndStartTime(newPieceIndex);
+
         else if(newPieceIndex==-1) {
             System.out.println("merging");
             this.fileManager.mergefiles();
         } else if(newPieceIndex==-2) {
             PeerToPeerHelper.sendNotInterestedMessage(this.out);
         }
+    }
+
+    private void sendRequestAndStartTime(int newPieceIndex) throws Exception {
+        PeerToPeerHelper.sendRequestMessage(this.out, newPieceIndex);
+        initTime = System.nanoTime();
     }
 }
