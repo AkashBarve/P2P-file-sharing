@@ -157,11 +157,11 @@ public class PeerToPeer {
     }
 
     private void handleUnchokeMessage(int pieceidx) throws Exception {
+        Peer.startInstance().getLogger().receiveUnchoke(this.peerID, this.remotePeer.getRemotePeerId());
         if (pieceidx == -1 || pieceidx == -2) {
             PeerToPeerHelper.sendNotInterestedMessage(this.out);
         } else {
             sendRequestAndStartTime(pieceidx);
-            Peer.startInstance().getLogger().receiveUnchoke(this.peerID, this.remotePeer.getRemotePeerId());
         }
     }
 

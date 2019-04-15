@@ -108,5 +108,6 @@ public void totalPreferredNeighbors(Map<BitSet, RemotePeer> PreferredNeighbors){
 
     public void receiveReqMsg(int peerID, int remotePeerId, int pieceIndex) {
         String msg = (dateFormat.format(new Date()).toString() + ": Peer " +peerID + " recives a 'request' message from Peer" + remotePeerId + " for piece at index " + pieceIndex + "." );
+        PeerLogger.log(Level.INFO, msg);
     }
 }
