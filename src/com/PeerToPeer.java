@@ -117,7 +117,7 @@ public class PeerToPeer {
             Message incomingMessage = PeerToPeerHelper.getMessage(this.in);
             byte messageType = incomingMessage.getMessageType();
             byte[] messagePayload = incomingMessage.getMessagePayload();
-            System.out.println("got message");
+            System.out.println(System.nanoTime() + " : got message " + (int)messageType);
 
             switch (messageType) {
                 case (byte) 0:
@@ -164,10 +164,10 @@ public class PeerToPeer {
     }
 
     private void handleUnchokeMessage(int pieceidx) throws Exception {
-        if (pieceidx == -1) {
+        if (pieceidx == -1 || pieceidx == -2) {
+            System.out.println("sending not interested 1");
             PeerToPeerHelper.sendNotInterestedMessage(this.out);
-        }
-        if(pieceidx != -1) {
+        } else {
             sendRequestAndStartTime(pieceidx);
             this.downloadInitTime = System.nanoTime();
             this.checkFlag = true;
@@ -194,6 +194,7 @@ public class PeerToPeer {
             System.out.println("got bitfield, sending interested");
         } else {
             PeerToPeerHelper.sendNotInterestedMessage(this.out);
+            System.out.println("sending not interested 2");
         }
     }
 
@@ -233,6 +234,7 @@ public class PeerToPeer {
             this.fileManager.mergefiles();
         } else if(newPieceIndex==-2) {
             PeerToPeerHelper.sendNotInterestedMessage(this.out);
+            System.out.println("sending not interested 3");
         }
     }
 
