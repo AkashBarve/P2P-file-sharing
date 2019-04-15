@@ -69,4 +69,29 @@ public class PeerLogging {
         this.peerID = peerID;
         System.out.println("logger created");
     }
+
+    public void receivesHaveMessage(int peerID, int remotePeerId, int pieceIndex) {
+        String msg = (dateFormat.format(new Date()).toString() + ": Peer " + peerID + " received the 'have' message from " + remotePeerId + " for the piece " + pieceIndex + ".");
+        PeerLogger.log(Level.INFO, msg);
+    }
+
+    public void receivesInterested(int peerID, int remotePeerId) {
+        String msg = (dateFormat.format(new Date()).toString() + ": Peer " + peerID + " received the 'interested' message from " + remotePeerId + ".");
+        PeerLogger.log(Level.INFO, msg);
+    }
+
+    public void receivesNotInterested(int peerID, int remotePeerId) {
+        String msg = (dateFormat.format(new Date()).toString() + ": Peer " + peerID + " received the 'not interested' message from " + remotePeerId + ".");
+        PeerLogger.log(Level.INFO, msg);
+    }
+
+    public void receivesPiece(int peerID, int pieceIndex, int remotePeerId, int i) {
+        String msg = (dateFormat.format(new Date()).toString() + ": Peer " + peerID + " has downloaded the piece " + pieceIndex + " from " + remotePeerId + ". Now the number of pieces it has is " + i +".");
+        PeerLogger.log(Level.INFO, msg);
+    }
+
+    public void downloadComplete(int peerID) {
+        String msg = (dateFormat.format(new Date()).toString() + ": Peer " + peerID + " has downloaded the complete file.");
+        PeerLogger.log(Level.INFO, msg);
+    }
 }

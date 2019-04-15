@@ -131,12 +131,14 @@ public class PeerToPeer {
                 case (byte) 2:
                     // Interested
                     Peer.startInstance().interestedPeers.putIfAbsent(remotePeer.getRemotePeerId(), remotePeer);
+                    Peer.startInstance().getLogger().receivesInterested(this.peerID, this.remotePeer.getRemotePeerId());
                     for(RemotePeer rp: Peer.startInstance().interestedPeers.values()){
                         System.out.println("rp id: "+rp.getRemotePeerId());
                     }
                     break;
                 case (byte) 3:
                     // Not Interested
+                    Peer.startInstance().getLogger().receivesNotInterested(this.peerID, this.remotePeer.getRemotePeerId());
                     if (Peer.startInstance().interestedPeers.containsKey(remotePeer.getRemotePeerId())) {
                         Peer.startInstance().interestedPeers.remove(remotePeer.getRemotePeerId());
                     }
@@ -176,6 +178,7 @@ public class PeerToPeer {
 
     private void handleHaveMessage(byte[] messagePayload) throws Exception {
         int pieceIndex = MessageUtil.byteArrayToInt(messagePayload);
+        Peer.startInstance().getLogger().receivesHaveMessage(this.peerID, this.remotePeer.getRemotePeerId(), pieceIndex);
         this.remotePeer.getRemoteBitFieldArray().set(pieceIndex);
         if (PeerToPeerHelper.isInterested(this.remotePeer.getRemoteBitFieldArray())) {
             PeerToPeerHelper.sendInterestedMessage(this.out);
@@ -219,6 +222,10 @@ public class PeerToPeer {
         }
 
         int pieceIndex = MessageUtil.byteArrayToInt(pieceIndexByteArray);
+        BitSet temp = Peer.startInstance().getBitFieldArray();
+        int trues = temp.cardinality();
+        int falses = temp.length() - trues;
+        Peer.startInstance().getLogger().receivesPiece(this.peerID, pieceIndex, this.remotePeer.getRemotePeerId(), falses + 1);
         System.out.println("piece index: "+pieceIndex);
         if (!Peer.startInstance().getBitFieldArray().get(pieceIndex)) {
             this.fileManager.receivePartOfFile(pieceIndex, MessageUtil.removePieceIndex(messagePayload));
@@ -234,6 +241,7 @@ public class PeerToPeer {
         else if(newPieceIndex==-1) {
             System.out.println("merging");
             this.fileManager.mergefiles();
+            Peer.startInstance().getLogger().downloadComplete(this.peerID);
         } else if(newPieceIndex==-2) {
             PeerToPeerHelper.sendNotInterestedMessage(this.out);
             System.out.println("sending not interested 3");
