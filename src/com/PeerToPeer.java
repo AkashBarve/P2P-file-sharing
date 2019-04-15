@@ -120,7 +120,7 @@ public class PeerToPeer {
 
             switch (messageType) {
                 case (byte) 0:
-                    System.out.println("got choke");
+                    Peer.startInstance().getLogger().receiveschoke(this.peerID, this.remotePeer.getRemotePeerId());
                     break;
                 case (byte) 1:
                     // Unchoke
@@ -169,6 +169,7 @@ public class PeerToPeer {
             System.out.println("sending not interested 1");
             PeerToPeerHelper.sendNotInterestedMessage(this.out);
         } else {
+            Peer.startInstance().getLogger().receiveUnchoke(this.peerID, this.remotePeer.getRemotePeerId());
             sendRequestAndStartTime(pieceidx);
         }
     }
@@ -254,23 +255,4 @@ public class PeerToPeer {
         initTime = System.nanoTime();
     }
 
-    private void assisterForLogging(RemotePeer remotePeer, Message msg) {
-        byte b = msg.getMessageType();
-        if(b == 0) {
-           // peerProcess.log.logChoked(peerID, remotePeer.getRemotePeerId());
-          Peer.startInstance().getLogger().logChoked(peerID, remotePeer.getRemotePeerId());
-        }
-        else if(b == 1) {
-           Peer.startInstance().getLogger().logunChoked(peerID,remotePeer.getRemotePeerId());
-        }
-        else if(b == 2) {
-            Peer.startInstance().getLogger().logIntresetd(peerID, remotePeer.getRemotePeerId());
-        }
-        else if(b == 3) {
-            Peer.startInstance().getLogger().logNotIntresetd(peerID, remotePeer.getRemotePeerId());
-        }
-        else if(b == 4) {
-            Peer.startInstance().getLogger().logHave(peerID, remotePeer.getRemotePeerId());
-        }
-    }
 }

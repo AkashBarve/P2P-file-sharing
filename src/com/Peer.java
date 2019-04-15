@@ -213,6 +213,7 @@ public class Peer {
                     PeerToPeerHelper.sendUnchokeMessage(this.optimisticallyUnchokedPeer.OutputStream);
                     if (this.chokedPeers.containsKey(this.optimisticallyUnchokedPeer.getRemotePeerId()))
                         this.chokedPeers.remove(this.optimisticallyUnchokedPeer.getRemotePeerId());
+                    Peer.startInstance().getLogger().changeOptimisticallyUnchoked(this.peerID, this.optimisticallyUnchokedPeer.getRemotePeerId());
                 } catch (Exception e) {
                     throw new RuntimeException("Could not send unchoke message", e);
                 }

@@ -10,6 +10,7 @@ import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class PeerToPeerHelper {
+    private int peerID;
     public static Message sendBitFieldMessage(ObjectOutputStream out) throws Exception {
         byte[] ba = Peer.startInstance().getBitFieldArray().toByteArray();
         System.out.println("ba: "+ba);
@@ -143,4 +144,5 @@ public class PeerToPeerHelper {
         out.writeObject(message);
         out.flush();
     }
+
 }
