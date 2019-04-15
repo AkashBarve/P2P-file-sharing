@@ -2,7 +2,7 @@ package com.message;
 
 import java.io.Serializable;
 
-public abstract class Message implements Serializable {
+public class Message implements Serializable {
     private byte messageType;
     private byte[] messageLength, messagePayload;
 
@@ -18,13 +18,13 @@ public abstract class Message implements Serializable {
         return messagePayload;
     }
 
-    public Message(byte messageType) {
-        this.messageType = messageType;
+    public Message(MessageType messageType) {
+        this.messageType = messageType.getByteValue();
         this.messageLength = MessageUtil.intToByteArray(1);
     }
 
-    public Message(byte messageType, byte[] messagePayload) {
-        this.messageType = messageType;
+    public Message(MessageType messageType, byte[] messagePayload) {
+        this.messageType = messageType.getByteValue();
         this.messageLength = MessageUtil.intToByteArray(messagePayload.length + 1);
         this.messagePayload = messagePayload;
     }
