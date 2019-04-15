@@ -115,6 +115,7 @@ public class PeerToPeer {
 
             switch (messageType) {
                 case (byte) 0:
+                    Peer.startInstance().getLogger().receiveschoke(this.peerID, this.remotePeer.getRemotePeerId());
                     break;
                 case (byte) 1:
                     // Unchoke
@@ -160,6 +161,7 @@ public class PeerToPeer {
             PeerToPeerHelper.sendNotInterestedMessage(this.out);
         } else {
             sendRequestAndStartTime(pieceidx);
+            Peer.startInstance().getLogger().receiveUnchoke(this.peerID, this.remotePeer.getRemotePeerId());
         }
     }
 

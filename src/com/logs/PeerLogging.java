@@ -1,11 +1,16 @@
 package com.logs;
 
+import com.RemotePeer;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.BitSet;
 import java.util.Date;
+import java.util.Map;
 import java.util.logging.*;
+import com.RemotePeer;
 
 public class PeerLogging {
     int peerID;
@@ -52,12 +57,31 @@ public class PeerLogging {
         PeerLogger.log(Level.INFO, msg);
     }
 
+public void totalPreferredNeighbors(Map<BitSet, RemotePeer> PreferredNeighbors){
+        String preferredString = "";
+        for(Map.Entry<BitSet, RemotePeer> entry: PreferredNeighbors.entrySet())
+        {
+            try{
+                    preferredString = preferredString+entry.getKey();
+            }
+            catch(Exception e) {
+
+            }
+        }
+        changePrefferedNeighbors(preferredString.substring(0, preferredString.length() - 1));
+}
+
+    public void changePrefferedNeighbors(String preferredString){
+        String msg = (dateFormat.format(new Date()).toString() + ": Peer " + peerID + " has the preferred neighbors " + preferredString + ".");
+        PeerLogger.log(Level.INFO, msg);
+    }
+
     public void changeOptimisticallyUnchoked(int peerID, int unchokeid) {
         String msg = (dateFormat.format(new Date()).toString() + ": Peer " + peerID + " has the optimistically unchoked neighbor " + unchokeid + ".");
         PeerLogger.log(Level.INFO, msg);
     }
 
-        public void receivesHaveMessage(int peerID, int remotePeerId, int pieceIndex) {
+    public void receivesHaveMessage(int peerID, int remotePeerId, int pieceIndex) {
         String msg = (dateFormat.format(new Date()).toString() + ": Peer " + peerID + " received the 'have' message from " + remotePeerId + " for the piece " + pieceIndex + ".");
         PeerLogger.log(Level.INFO, msg);
     }

@@ -193,6 +193,10 @@ public class Peer {
                 }
                 PreferedPeers.put(i, remPeer1);
             }
+
+//            for(temp.size()>0){
+//                Peer.startInstance().getLogger().totalPreferredNeighbors(temp);
+//            }
             // Unchoke k willingPeers based onl
         }
 
