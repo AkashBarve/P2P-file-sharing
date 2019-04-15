@@ -22,7 +22,7 @@ public class PeerToPeer {
     boolean communicationFlag;
     boolean checkFlag;
     ManageFile fileManager;
-    private Long downloadSpeed;
+    private Long downloadSpeed = 0l;
     private Long initTime;
     private Long endTime;
     private Long pieceCount = 0l;
@@ -168,7 +168,7 @@ public class PeerToPeer {
             PeerToPeerHelper.sendNotInterestedMessage(this.out);
         }
         if(pieceidx != -1) {
-            PeerToPeerHelper.sendRequestMessage(this.out, pieceidx);
+            sendRequestAndStartTime(pieceidx);
             this.downloadInitTime = System.nanoTime();
             this.checkFlag = true;
         }
