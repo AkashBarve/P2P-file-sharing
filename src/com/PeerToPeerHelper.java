@@ -81,6 +81,8 @@ public class PeerToPeerHelper {
     public static int getPieceIndexToRequest(RemotePeer remotePeer) {
         BitSet remoteBits = remotePeer.getRemoteBitFieldArray();
         BitSet peerbits = Peer.startInstance().getBitFieldArray();
+        if(Peer.startInstance().getHasFileOrNot()==1)
+            return -2;
         if(peerbits.equals(remoteBits) || remoteBits.isEmpty() ) {
             return -1;
         }
