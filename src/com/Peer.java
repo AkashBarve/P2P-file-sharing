@@ -179,7 +179,7 @@ public class Peer {
             }
             for (int i : temp) {
                 System.out.println("i in temp: " + i);
-                RemotePeer remPeer1  = interestedPeers.get(i);
+                RemotePeer remPeer1  = allPeers.get(i);
                 System.out.println("remPeer1: " + remPeer1.getRemotePeerId());
                 //send unchoke message
                 try {
