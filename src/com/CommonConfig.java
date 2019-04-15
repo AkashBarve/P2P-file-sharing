@@ -6,11 +6,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CommonConfig {
-    public static String Filename;
+    public static String FileName;
     public static Integer NumberOfPreferredNeighbors;
     private static Integer UnchokingInterval;
     private static Integer OptimisticUnchokingInterval;
-    private static String FileName;
     private static Integer FileSize;
     private static Integer PieceSize;
 
@@ -29,7 +28,7 @@ public class CommonConfig {
             NumberOfPreferredNeighbors = Integer.parseInt(common_config_details.get("NumberOfPreferredNeighbors"));
             UnchokingInterval = Integer.parseInt(common_config_details.get("UnchokingInterval"));
             OptimisticUnchokingInterval = Integer.parseInt(common_config_details.get("OptimisticUnchokingInterval"));
-            Filename = common_config_details.get("FileName");
+            FileName = common_config_details.get("FileName");
             FileSize = Integer.parseInt(common_config_details.get("FileSize"));
             PieceSize = Integer.parseInt(common_config_details.get("PieceSize"));
             peer.TotalPieces(FileSize, PieceSize);

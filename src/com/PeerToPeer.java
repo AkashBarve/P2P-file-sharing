@@ -212,12 +212,14 @@ public class PeerToPeer {
         pieceCount++;
         Peer.startInstance().downloadSpeeds.put(remotePeer.getRemotePeerId(), (double)downloadSpeed);
         // Detach first 4 bytes -> pieceIndex
+        System.out.println("full payload size: "+messagePayload.length);
         byte[] pieceIndexByteArray = new byte[4];
         for (int i=0; i<4; i++) {
             pieceIndexByteArray[i] = messagePayload[i];
         }
 
         int pieceIndex = MessageUtil.byteArrayToInt(pieceIndexByteArray);
+        System.out.println("piece index: "+pieceIndex);
         if (!Peer.startInstance().getBitFieldArray().get(pieceIndex)) {
             this.fileManager.receivePartOfFile(pieceIndex, MessageUtil.removePieceIndex(messagePayload));
             Peer.startInstance().setBitField(pieceIndex);

@@ -8,7 +8,7 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import static com.CommonConfig.CommonConfig;
-import static com.CommonConfig.Filename;
+import static com.CommonConfig.FileName;
 import static com.PeerConfig.PeerConfig;
 
 
@@ -27,7 +27,7 @@ public class peerProcess {
             System.out.println("debug" + peer.getHasFileOrNot());
             if (peer.getHasFileOrNot() == 1) {
                 try {
-                    String filepath = System.getProperty("user.dir") + "/peer_" + Integer.toString(peerID) + "/" + Filename;
+                    String filepath = System.getProperty("user.dir") + "/peer_" + Integer.toString(peerID) + "/" + FileName;
                     File f = new File(filepath);
                     peer.setBitFieldArray();
                     peer.setFullBitFieldArray();
