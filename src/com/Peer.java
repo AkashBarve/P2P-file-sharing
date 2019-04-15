@@ -122,7 +122,7 @@ public class Peer {
             int k = NoOfPreferredNeighbors;
             Set<Integer> temp = new HashSet<>();
             List<Integer> keys = new ArrayList<>(interestedPeers.keySet());
-            LinkedHashMap<Integer, Double> downloadSpeedsSorted = new LinkedHashMap<>();
+            Map<Integer, Double> downloadSpeedsSorted = Collections.synchronizedMap(new LinkedHashMap<>());
             downloadSpeeds.entrySet()
                     .stream()
                     .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
