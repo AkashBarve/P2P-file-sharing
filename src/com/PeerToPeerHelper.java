@@ -1,10 +1,9 @@
 package com;
 
 import com.message.Message;
-import com.message.MessageBuilder;
+import com.message.MessageType;
 import com.message.MessageUtil;
 
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.*;
@@ -14,7 +13,7 @@ public class PeerToPeerHelper {
     public static Message sendBitFieldMessage(ObjectOutputStream out) throws Exception {
         byte[] ba = Peer.startInstance().getBitFieldArray().toByteArray();
         System.out.println("ba: "+ba);
-        Message message = MessageBuilder.buildMessage((byte) 5, ba);
+        Message message = new Message(MessageType.BITFIELD, ba);
         byte[] outMessage = MessageUtil.concatenateByteArrays(MessageUtil.concatenateByteToArray(message.getMessageLength(), message.getMessageType()), message.getMessagePayload());
         out.writeObject(message);
         out.flush();
@@ -66,14 +65,14 @@ public class PeerToPeerHelper {
     }
 
     public static Message sendInterestedMessage(ObjectOutputStream out) throws Exception {
-        Message message = MessageBuilder.buildMessage((byte) 2);
+        Message message = new Message(MessageType.INTERESTED);
         out.writeObject(message);
         out.flush();
         return message;
     }
 
     public static Message sendNotInterestedMessage(ObjectOutputStream out) throws Exception {
-        Message message = MessageBuilder.buildMessage((byte) 3);
+        Message message = new Message(MessageType.NOT_INTERESTED);
         out.writeObject(message);
         out.flush();
         return message;
@@ -108,13 +107,13 @@ public class PeerToPeerHelper {
     }
 
     public static void sendRequestMessage(ObjectOutputStream out, int pieceIndex) throws Exception {
-        Message message = MessageBuilder.buildMessage((byte) 6, MessageUtil.intToByteArray(pieceIndex));
+        Message message = new Message(MessageType.REQUEST, MessageUtil.intToByteArray(pieceIndex));
         out.writeObject(message);
         out.flush();
     }
 
     public static void sendPieceMessage(ObjectOutputStream out, ManageFile fileManager, int pieceIndex, byte[] pieceIndexByteArray) throws Exception {
-        Message message = MessageBuilder.buildMessage((byte) 7, MessageUtil.concatenateByteArrays(pieceIndexByteArray, fileManager.getPartOfFile(pieceIndex)));
+        Message message = new Message(MessageType.PIECE, MessageUtil.concatenateByteArrays(pieceIndexByteArray, fileManager.getPartOfFile(pieceIndex)));
         out.writeObject(message);
         out.flush();
     }
@@ -126,19 +125,19 @@ public class PeerToPeerHelper {
     }
 
     private static void sendHaveMessage(ObjectOutputStream out, byte[] pieceIndex) throws Exception {
-        Message message = MessageBuilder.buildMessage((byte) 3, pieceIndex);
+        Message message = new Message(MessageType.HAVE, pieceIndex);
         out.writeObject(message);
         out.flush();
     }
 
     public static void sendUnchokeMessage(ObjectOutputStream out) throws Exception {
-        Message message = MessageBuilder.buildMessage((byte) 1);
+        Message message = new Message(MessageType.UNCHOKE);
         out.writeObject(message);
         out.flush();
     }
 
     public static void sendChokeMessage(ObjectOutputStream out) throws Exception {
-        Message message = MessageBuilder.buildMessage((byte) 0);
+        Message message = new Message(MessageType.CHOKE);
         out.writeObject(message);
         out.flush();
     }
