@@ -15,8 +15,8 @@ import static com.PeerConfig.PeerConfig;
 public class peerProcess {
     private static Peer peer;
     public static void main(String[] args) {
-        String COMMON_CONFIG = "/src/com/Common.cfg";
-        String PEER_CONFIG = "/src/com/PeerInfo.cfg";
+        String COMMON_CONFIG = "/Common.cfg";
+        String PEER_CONFIG = "/PeerInfo.cfg";
         if (args.length == 1) {
             peer = Peer.startInstance();
             int peerID = Integer.parseInt(args[0]);
