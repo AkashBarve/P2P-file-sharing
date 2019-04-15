@@ -101,26 +101,20 @@ public class PeerToPeer {
     }
 
     public void startCommunication() throws Exception {
-        Message message;
         communicationFlag = true;
 
         if(!Peer.startInstance().getBitFieldArray().isEmpty()) {
-            System.out.println("hello folks");
-            message = PeerToPeerHelper.sendBitFieldMessage(this.out);
-            for( int i=0; i<Peer.startInstance().getBitFieldArray().length(); i++ ){
-                System.out.println("bf: "+Peer.startInstance().getBitFieldArray().get(i));
-            }
+            PeerToPeerHelper.sendBitFieldMessage(this.out);
         }
 
         while (communicationFlag) {
             Message incomingMessage = PeerToPeerHelper.getMessage(this.in);
             byte messageType = incomingMessage.getMessageType();
             byte[] messagePayload = incomingMessage.getMessagePayload();
-            System.out.println(System.nanoTime() + " : got message " + (int)messageType);
+            System.out.println(System.nanoTime() + " : got message : " + (int)messageType);
 
             switch (messageType) {
                 case (byte) 0:
-                    Peer.startInstance().getLogger().receiveschoke(this.peerID, this.remotePeer.getRemotePeerId());
                     break;
                 case (byte) 1:
                     // Unchoke
@@ -131,9 +125,6 @@ public class PeerToPeer {
                     // Interested
                     Peer.startInstance().interestedPeers.putIfAbsent(remotePeer.getRemotePeerId(), remotePeer);
                     Peer.startInstance().getLogger().receivesInterested(this.peerID, this.remotePeer.getRemotePeerId());
-                    for(RemotePeer rp: Peer.startInstance().interestedPeers.values()){
-                        System.out.println("rp id: "+rp.getRemotePeerId());
-                    }
                     break;
                 case (byte) 3:
                     // Not Interested
@@ -166,10 +157,8 @@ public class PeerToPeer {
 
     private void handleUnchokeMessage(int pieceidx) throws Exception {
         if (pieceidx == -1 || pieceidx == -2) {
-            System.out.println("sending not interested 1");
             PeerToPeerHelper.sendNotInterestedMessage(this.out);
         } else {
-            Peer.startInstance().getLogger().receiveUnchoke(this.peerID, this.remotePeer.getRemotePeerId());
             sendRequestAndStartTime(pieceidx);
         }
     }
@@ -184,24 +173,17 @@ public class PeerToPeer {
     }
 
     private void handleBitFieldMessage(byte[] messagePayload) throws Exception {
-        System.out.println("got bitfield"+ messagePayload);
         BitSet bitSet = BitSet.valueOf(messagePayload);
-        for(int i=0; i<bitSet.length(); i++ ){
-            System.out.println("print bf: "+bitSet.get(i));
-        }
         this.remotePeer.setRemotePeerBitFieldArray(bitSet);
         if (PeerToPeerHelper.isInterested(bitSet)) {
             PeerToPeerHelper.sendInterestedMessage(this.out);
-            System.out.println("got bitfield, sending interested");
         } else {
             PeerToPeerHelper.sendNotInterestedMessage(this.out);
-            System.out.println("sending not interested 2");
         }
     }
 
     private void handleRequestMessage(byte[] messagePayload) throws Exception {
         int pieceIndex = MessageUtil.byteArrayToInt(messagePayload);
-        System.out.println("received request: "+ pieceIndex);
         if (Peer.startInstance().interestedPeers.containsKey(this.remotePeer.getRemotePeerId())) {
             PeerToPeerHelper.sendPieceMessage(this.out, this.fileManager, pieceIndex, messagePayload);
         }
@@ -213,7 +195,6 @@ public class PeerToPeer {
         pieceCount++;
         Peer.startInstance().downloadSpeeds.put(remotePeer.getRemotePeerId(), (double)downloadSpeed);
         // Detach first 4 bytes -> pieceIndex
-        System.out.println("full payload size: "+messagePayload.length);
         byte[] pieceIndexByteArray = new byte[4];
         for (int i=0; i<4; i++) {
             pieceIndexByteArray[i] = messagePayload[i];
@@ -223,9 +204,8 @@ public class PeerToPeer {
         BitSet temp = Peer.startInstance().getBitFieldArray();
         int trues = temp.cardinality();
         int falses = temp.length() - trues;
-        Peer.startInstance().getLogger().receivesPiece(this.peerID, pieceIndex, this.remotePeer.getRemotePeerId(), falses + 1);
-        System.out.println("piece index: "+pieceIndex);
         if (!Peer.startInstance().getBitFieldArray().get(pieceIndex)) {
+            Peer.startInstance().getLogger().receivesPiece(this.peerID, pieceIndex, this.remotePeer.getRemotePeerId(), trues + 1);
             this.fileManager.receivePartOfFile(pieceIndex, MessageUtil.removePieceIndex(messagePayload));
             Peer.startInstance().setBitField(pieceIndex);
 
@@ -238,7 +218,6 @@ public class PeerToPeer {
 
         else if(newPieceIndex==-2) {
             if (!this.mergingDone) {
-                System.out.println("merging");
                 this.fileManager.mergefiles();
                 Peer.startInstance().getLogger().downloadComplete(this.peerID);
                 this.mergingDone = true;
@@ -246,7 +225,6 @@ public class PeerToPeer {
             PeerToPeerHelper.sendNotInterestedMessage(this.out);
         } else if(newPieceIndex==-1) {
             PeerToPeerHelper.sendNotInterestedMessage(this.out);
-            System.out.println("sending not interested 3");
         }
     }
 
@@ -254,5 +232,4 @@ public class PeerToPeer {
         PeerToPeerHelper.sendRequestMessage(this.out, newPieceIndex);
         initTime = System.nanoTime();
     }
-
 }

@@ -54,7 +54,6 @@ public class PeerToPeerHelper {
 
     public static synchronized boolean isInterested(BitSet bs) {
         BitSet myBs = Peer.startInstance().getBitFieldArray();
-        System.out.println("mybs length "+myBs.length());
         if (Peer.startInstance().getHasFileOrNot() > 0)
             return false;
         for (int i = 0; i < bs.length(); i++) {
@@ -95,13 +94,6 @@ public class PeerToPeerHelper {
                 IndexOptionsToRequest.add(i);
             }
         }
-        for(int i=0; i<peerbits.length(); i++ ){
-            System.out.println("print my bf: "+peerbits.get(i));
-        }
-        for(int i=0; i<remoteBits.length(); i++ ){
-            System.out.println("print remote bf: "+remoteBits.get(i));
-        }
-        System.out.println("IndexOptionsToRequest.size(): "+IndexOptionsToRequest.size());
         if(!IndexOptionsToRequest.isEmpty()) {
             int randomElementIndex = ThreadLocalRandom.current().nextInt(IndexOptionsToRequest.size()) % IndexOptionsToRequest.size();
             return IndexOptionsToRequest.get(randomElementIndex);
