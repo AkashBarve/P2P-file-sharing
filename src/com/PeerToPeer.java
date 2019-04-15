@@ -18,9 +18,8 @@ public class PeerToPeer {
     private String header;
     private String zeroBits;
     private int peerID;
-    Long downloadInitTime;
     boolean communicationFlag;
-    boolean checkFlag;
+    boolean mergingDone = false;
     ManageFile fileManager;
     private Long downloadSpeed = 0l;
     private Long initTime;
@@ -171,8 +170,6 @@ public class PeerToPeer {
             PeerToPeerHelper.sendNotInterestedMessage(this.out);
         } else {
             sendRequestAndStartTime(pieceidx);
-            this.downloadInitTime = System.nanoTime();
-            this.checkFlag = true;
         }
     }
 
@@ -235,14 +232,18 @@ public class PeerToPeer {
         }
 
         int newPieceIndex = PeerToPeerHelper.getPieceIndexToRequest(this.remotePeer);
-        if(newPieceIndex>=-0)
+        if(newPieceIndex>=0)
             sendRequestAndStartTime(newPieceIndex);
 
-        else if(newPieceIndex==-1) {
-            System.out.println("merging");
-            this.fileManager.mergefiles();
-            Peer.startInstance().getLogger().downloadComplete(this.peerID);
-        } else if(newPieceIndex==-2) {
+        else if(newPieceIndex==-2) {
+            if (!this.mergingDone) {
+                System.out.println("merging");
+                this.fileManager.mergefiles();
+                Peer.startInstance().getLogger().downloadComplete(this.peerID);
+                this.mergingDone = true;
+            }
+            PeerToPeerHelper.sendNotInterestedMessage(this.out);
+        } else if(newPieceIndex==-1) {
             PeerToPeerHelper.sendNotInterestedMessage(this.out);
             System.out.println("sending not interested 3");
         }
