@@ -157,7 +157,8 @@ public class Peer {
                     }
                 }
             }
-            for(int p : PreferedPeers.keySet()) {
+            Set<Integer> temp1 = PreferedPeers.keySet();
+            for(int p : temp1) {
                 if(temp.contains(p)) {
                     temp.remove(p);
                 }
