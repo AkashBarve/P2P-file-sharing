@@ -58,8 +58,7 @@ public class ManageFile {
             return fileSoFar.get(filePartNumber);
     }
 
-    public void receivePartOfFile(int partNumber, byte[] payload) {
-        byte[] piece = MessageUtil.removePieceIndex(payload);
+    public void receivePartOfFile(int partNumber, byte[] piece) {
         fileSoFar.put(partNumber, piece);
     }
 
