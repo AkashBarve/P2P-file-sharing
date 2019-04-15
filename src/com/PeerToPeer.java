@@ -244,4 +244,24 @@ public class PeerToPeer {
         PeerToPeerHelper.sendRequestMessage(this.out, newPieceIndex);
         initTime = System.nanoTime();
     }
+
+    private void assisterForLogging(RemotePeer remotePeer, Message msg) {
+        byte b = msg.getMessageType();
+        if(b == 0) {
+           // peerProcess.log.logChoked(peerID, remotePeer.getRemotePeerId());
+          Peer.startInstance().getLogger().logChoked(peerID, remotePeer.getRemotePeerId());
+        }
+        else if(b == 1) {
+           Peer.startInstance().getLogger().logunChoked(peerID,remotePeer.getRemotePeerId());
+        }
+        else if(b == 2) {
+            Peer.startInstance().getLogger().logIntresetd(peerID, remotePeer.getRemotePeerId());
+        }
+        else if(b == 3) {
+            Peer.startInstance().getLogger().logNotIntresetd(peerID, remotePeer.getRemotePeerId());
+        }
+        else if(b == 4) {
+            Peer.startInstance().getLogger().logHave(peerID, remotePeer.getRemotePeerId());
+        }
+    }
 }

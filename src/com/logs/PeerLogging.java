@@ -26,6 +26,34 @@ public class PeerLogging {
         PeerLogger.log (Level.INFO,msg);
     }
 
+    public void logunChoked(int peerID, int remotePeerId)
+    {
+        String msg = (dateFormat.format(new Date()).toString() + ": Peer " + peerID + " is unchoked by Peer " + remotePeerId +".");
+        PeerLogger.log (Level.INFO,msg);
+    }
+
+    public void logChoked(int peerID, int remotePeerId){
+        String msg = (dateFormat.format(new Date()).toString() + ": Peer " + peerID + " is choked by Peer " + remotePeerId +".");
+        PeerLogger.log (Level.INFO,msg);
+    }
+
+    public void logHave(int peerID, int remotePeerId){
+        String msg = (dateFormat.format(new Date()).toString() + ": Peer " + peerID + " received have message from " + remotePeerId +".");
+        PeerLogger.log (Level.INFO,msg);
+    }
+
+
+
+    public void logIntresetd(int peerID, int remotePeerId){
+        String msg = (dateFormat.format(new Date()).toString() + ": Peer " + peerID + " received the interested message from " + remotePeerId +".");
+        PeerLogger.log (Level.INFO,msg);
+    }
+
+    public void logNotIntresetd(int peerID, int remotePeerId){
+        String msg = (dateFormat.format(new Date()).toString() + ": Peer " + peerID + " received the not interested message from " + remotePeerId +".");
+        PeerLogger.log (Level.INFO,msg);
+    }
+
     public void createLogger(int peerID) {
 
         String logFileName =  System.getProperty("user.dir") + "/log_peer_" + Integer.toString(peerID) + ".log";
