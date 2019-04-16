@@ -119,8 +119,7 @@ public class PeerToPeer {
                     break;
                 case (byte) 1:
                     // Unchoke
-                    int pieceidx = PeerToPeerHelper.getPieceIndexToRequest(remotePeer);
-                    this.handleUnchokeMessage(pieceidx);
+                    this.handleUnchokeMessage();
                     break;
                 case (byte) 2:
                     // Interested
@@ -156,8 +155,9 @@ public class PeerToPeer {
         }
     }
 
-    private void handleUnchokeMessage(int pieceidx) throws Exception {
-        Peer.startInstance().getLogger().receiveUnchoke(this.peerID, this.remotePeer.getRemotePeerId());
+    private void handleUnchokeMessage() throws Exception {
+        int pieceidx = PeerToPeerHelper.getPieceIndexToRequest(remotePeer);
+        Peer.startInstance().getLogger().receiveUnchoke(pieceidx, this.remotePeer.getRemotePeerId());
         if (pieceidx == -1 || pieceidx == -2) {
             PeerToPeerHelper.sendNotInterestedMessage(this.out);
         } else {

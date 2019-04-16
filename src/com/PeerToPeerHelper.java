@@ -10,12 +10,9 @@ import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class PeerToPeerHelper {
-    private int peerID;
     public static Message sendBitFieldMessage(ObjectOutputStream out) throws Exception {
         byte[] ba = Peer.startInstance().getBitFieldArray().toByteArray();
-        System.out.println("ba: "+ba);
-        Message message = new Message(MessageType.BITFIELD, ba);
-        byte[] outMessage = MessageUtil.concatenateByteArrays(MessageUtil.concatenateByteToArray(message.getMessageLength(), message.getMessageType()), message.getMessagePayload());
+        Message message = new Message(MessageType.BITFIELD.getByteValue(), ba);
         out.writeObject(message);
         out.flush();
         return message;
@@ -65,20 +62,20 @@ public class PeerToPeerHelper {
     }
 
     public static Message sendInterestedMessage(ObjectOutputStream out) throws Exception {
-        Message message = new Message(MessageType.INTERESTED);
+        Message message = new Message(MessageType.INTERESTED.getByteValue());
         out.writeObject(message);
         out.flush();
         return message;
     }
 
     public static Message sendNotInterestedMessage(ObjectOutputStream out) throws Exception {
-        Message message = new Message(MessageType.NOT_INTERESTED);
+        Message message = new Message(MessageType.NOT_INTERESTED.getByteValue());
         out.writeObject(message);
         out.flush();
         return message;
     }
 
-    public static int getPieceIndexToRequest(RemotePeer remotePeer) {
+    public static synchronized int getPieceIndexToRequest(RemotePeer remotePeer) {
         BitSet remoteBits = remotePeer.getRemoteBitFieldArray();
         BitSet peerbits = Peer.startInstance().getBitFieldArray();
         if(Peer.startInstance().getHasFileOrNot()==1)
@@ -102,13 +99,13 @@ public class PeerToPeerHelper {
     }
 
     public static void sendRequestMessage(ObjectOutputStream out, int pieceIndex) throws Exception {
-        Message message = new Message(MessageType.REQUEST, MessageUtil.intToByteArray(pieceIndex));
+        Message message = new Message(MessageType.REQUEST.getByteValue(), MessageUtil.intToByteArray(pieceIndex));
         out.writeObject(message);
         out.flush();
     }
 
     public static void sendPieceMessage(ObjectOutputStream out, ManageFile fileManager, int pieceIndex, byte[] pieceIndexByteArray) throws Exception {
-        Message message = new Message(MessageType.PIECE, MessageUtil.concatenateByteArrays(pieceIndexByteArray, fileManager.getPartOfFile(pieceIndex)));
+        Message message = new Message(MessageType.PIECE.getByteValue(), MessageUtil.concatenateByteArrays(pieceIndexByteArray, fileManager.getPartOfFile(pieceIndex)));
         out.writeObject(message);
         out.flush();
     }
@@ -120,19 +117,19 @@ public class PeerToPeerHelper {
     }
 
     private static void sendHaveMessage(ObjectOutputStream out, byte[] pieceIndex) throws Exception {
-        Message message = new Message(MessageType.HAVE, pieceIndex);
+        Message message = new Message(MessageType.HAVE.getByteValue(), pieceIndex);
         out.writeObject(message);
         out.flush();
     }
 
     public static void sendUnchokeMessage(ObjectOutputStream out) throws Exception {
-        Message message = new Message(MessageType.UNCHOKE);
+        Message message = new Message(MessageType.UNCHOKE.getByteValue());
         out.writeObject(message);
         out.flush();
     }
 
     public static void sendChokeMessage(ObjectOutputStream out) throws Exception {
-        Message message = new Message(MessageType.CHOKE);
+        Message message = new Message(MessageType.CHOKE.getByteValue());
         out.writeObject(message);
         out.flush();
     }
