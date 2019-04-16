@@ -18,13 +18,13 @@ public class Message implements Serializable {
         return messagePayload;
     }
 
-    public Message(MessageType messageType) {
-        this.messageType = messageType.getByteValue();
+    public Message(byte messageType) {
+        this.messageType = messageType;
         this.messageLength = MessageUtil.intToByteArray(1);
     }
 
-    public Message(MessageType messageType, byte[] messagePayload) {
-        this.messageType = messageType.getByteValue();
+    public Message(byte messageType, byte[] messagePayload) {
+        this.messageType = messageType;
         this.messageLength = MessageUtil.intToByteArray(messagePayload.length + 1);
         this.messagePayload = messagePayload;
     }
