@@ -196,7 +196,7 @@ public class PeerToPeer {
         endTime = System.nanoTime();
         downloadSpeed = ((pieceCount*downloadSpeed) + (messagePayload.length/(endTime-initTime)))/(pieceCount+1);
         pieceCount++;
-        Peer.startInstance().downloadSpeeds.put(remotePeer.getRemotePeerId(), (double)downloadSpeed);
+        Peer.startInstance().downloadSpeeds.put(remotePeer.getRemotePeerId(), downloadSpeed);
         // Detach first 4 bytes -> pieceIndex
         byte[] pieceIndexByteArray = new byte[4];
         for (int i=0; i<4; i++) {

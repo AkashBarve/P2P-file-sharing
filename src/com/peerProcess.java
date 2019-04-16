@@ -2,6 +2,8 @@ package com;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -24,6 +26,23 @@ public class peerProcess {
             CommonConfig(COMMON_CONFIG, peer);
             peer.setPreferredNeigborCount(CommonConfig.getNumberOfPreferredNeighbors());
             PeerConfig(PEER_CONFIG, peerID, peer);
+            try {
+                String PcHost = null;
+                try {
+                    PcHost = InetAddress.getLocalHost().toString();
+                    System.out.println(PcHost);
+                } catch (UnknownHostException e) {
+                    e.printStackTrace();
+                }
+                if((!PcHost.contains(peer.getHostName())) && !peer.getHostName().equals("127.0.0.1")) {
+                    throw new Exception();
+                }
+            }
+            catch (Exception e) {
+                System.out.println("Peer host id does not match config file");
+                System.exit(-1);
+            }
+
             System.out.println("debug" + peer.getHasFileOrNot());
             if (peer.getHasFileOrNot() == 1) {
                 try {
