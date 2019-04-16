@@ -54,7 +54,9 @@ public class PeerToPeerHelper {
         if (Peer.startInstance().getHasFileOrNot() > 0)
             return false;
         for (int i = 0; i < bs.length(); i++) {
-            if (bs.get(i) && !myBs.get(i)) {
+            boolean self = myBs.get(i);
+            boolean remote = bs.get(i);
+            if (self == false && remote == true) {
                 return true;
             }
         }
