@@ -16,6 +16,7 @@ public class Peer {
     private int portNo;
     private volatile int hasFileOrNot;
     private int NoOfPreferredNeighbors;
+    public int TotalNumberOfPeers;
     //private int noOfPiece
     Map<Integer, RemotePeer> peersStartedBefore = Collections.synchronizedMap(new LinkedHashMap<>());
     Map<Integer, RemotePeer> peersYetToStart = Collections.synchronizedMap(new LinkedHashMap<>());
@@ -83,6 +84,10 @@ public class Peer {
 
     int getTotalPieceCount() {
         return totalPieces;
+    }
+
+    void setTotalNumberOfPeers(int total) {
+        this.TotalNumberOfPeers = total;
     }
 
     public void setBitFieldArray() {
@@ -160,7 +165,7 @@ public class Peer {
                             PeerToPeerHelper.sendChokeMessage(rm.OutputStream);
                             System.out.println("sending choke");
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            //e.printStackTrace();
                         }
                         chokedPeers.put(key, rm);
                     }
@@ -178,7 +183,7 @@ public class Peer {
                             PeerToPeerHelper.sendChokeMessage(remPeer.OutputStream);
                             System.out.println("sending Choke");
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            //e.printStackTrace();
                         }
                         //send choke message
                         chokedPeers.put(p, remPeer);
@@ -195,7 +200,7 @@ public class Peer {
                 try {
                     PeerToPeerHelper.sendUnchokeMessage(remPeer1.OutputStream);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
                 }
                 PreferedPeers.put(i, remPeer1);
             }
@@ -226,7 +231,6 @@ public class Peer {
                         this.chokedPeers.remove(this.optimisticallyUnchokedPeer.getRemotePeerId());
                     Peer.startInstance().getLogger().changeOptimisticallyUnchoked(this.peerID, this.optimisticallyUnchokedPeer.getRemotePeerId());
                 } catch (Exception e) {
-                    throw new RuntimeException("Could not send unchoke message", e);
                 }
             }
         }
@@ -235,5 +239,26 @@ public class Peer {
 
     public void setPreferredNeigborCount(int numberOfPreferredNeighbors) {
         this.NoOfPreferredNeighbors = numberOfPreferredNeighbors;
+    }
+
+    public boolean isDownloadComplete() {
+        if (hasFileOrNot!=1) {
+//            System.out.println(peerID + " doesn't have all files");
+            return false;
+        }
+//        System.out.println(peerID + " has all files");
+        if (allPeers.size() < TotalNumberOfPeers-1) {
+//            System.out.println("Some peers not connected");
+            return false;
+        }
+//        System.out.println("All peers not connected");
+        for(RemotePeer rp : allPeers.values()) {
+            if(rp.getRemoteBitFieldArray().cardinality() != totalPieces){
+//                System.out.println(rp.getRemotePeerId() + " doesn't have all files");
+                return false;
+            }
+//            System.out.println(rp.getRemotePeerId() + " has all files");
+        }
+        return true;
     }
 }

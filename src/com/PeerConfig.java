@@ -11,7 +11,9 @@ public class PeerConfig {
             //Map<Integer, RemotePeer> peersStartedBefore = new HashMap<>();
             //Map<Integer, RemotePeer> peersYetToStart = new HashMap<>();
             String s;
+            int peerCount = 0;
             while ((s = br.readLine()) != null) {
+                peerCount ++;
                 System.out.println(s);
                 String s1[] = s.split(" ");
                 int readPeerId = Integer.parseInt(s1[0]);
@@ -32,6 +34,7 @@ public class PeerConfig {
                     }
                 }
             }
+            peer.setTotalNumberOfPeers(peerCount);
             br.close();
         } catch (FileNotFoundException e) {
             System.out.println("peerInfo.cfg not found");

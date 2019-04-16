@@ -62,7 +62,7 @@ public class Client implements Runnable{
                 p2p.initialize();
                 p2p.startCommunication();
             } catch (Exception e) {
-                e.printStackTrace();
+                //e.printStackTrace();
             }
 
         }
