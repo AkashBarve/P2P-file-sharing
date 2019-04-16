@@ -18,7 +18,6 @@ public class PeerToPeer {
     private String header;
     private String zeroBits;
     private int peerID;
-    boolean communicationFlag;
     boolean mergingDone = false;
     ManageFile fileManager;
     private Long downloadSpeed = 0l;
@@ -101,13 +100,11 @@ public class PeerToPeer {
     }
 
     public void startCommunication() throws Exception {
-        communicationFlag = true;
-
         if(!Peer.startInstance().getBitFieldArray().isEmpty()) {
             PeerToPeerHelper.sendBitFieldMessage(this.out);
         }
 
-        while (communicationFlag) {
+        while (!Peer.startInstance().isDownloadComplete()) {
             Message incomingMessage = PeerToPeerHelper.getMessage(this.in);
             byte messageType = incomingMessage.getMessageType();
             byte[] messagePayload = incomingMessage.getMessagePayload();

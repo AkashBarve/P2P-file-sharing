@@ -86,23 +86,39 @@ public class peerProcess {
                 Client client = new Client(peer.peersStartedBefore);
                 new Thread(client).start(); }, 1, TimeUnit.MILLISECONDS);
 
+            Timer timer1 = new Timer();
             TimerTask unchokePreferredPeersTask = new TimerTask() {
                 @Override
                 public void run() {
-                    peer.unchokePreferredPeers();
+                    if (peer.isDownloadComplete()) {
+                        timer1.cancel();
+                        timer1.purge();
+                        System.out.println("System exit 0 inside preferred neighbours");
+                        System.exit(0);
+                    } else {
+                        peer.unchokePreferredPeers();
+                    }
                 }
             };
 
-            (new Timer()).scheduleAtFixedRate(unchokePreferredPeersTask, (long) 1000*CommonConfig.getUnchokingInterval(), (long) 1000*CommonConfig.getUnchokingInterval());
+            timer1.scheduleAtFixedRate(unchokePreferredPeersTask, (long) 1000*CommonConfig.getUnchokingInterval(), (long) 1000*CommonConfig.getUnchokingInterval());
 
+            Timer timer2 = new Timer();
             TimerTask optimisticallyUnchokeRandomPeerTask = new TimerTask() {
                 @Override
                 public void run() {
-                    peer.optimisticallyUnchokeRandomPeer();
+                    if (peer.isDownloadComplete()) {
+                        timer2.cancel();
+                        timer2.purge();
+                        System.out.println("System exit 0 inside preferred neighbours");
+                        System.exit(0);
+                    } else {
+                        peer.optimisticallyUnchokeRandomPeer();
+                    }
                 }
             };
 
-            (new Timer()).scheduleAtFixedRate(optimisticallyUnchokeRandomPeerTask, (long) 1000*CommonConfig.getOptimisticUnchokingInterval(), (long) 1000*CommonConfig.getOptimisticUnchokingInterval());
+            timer2.scheduleAtFixedRate(optimisticallyUnchokeRandomPeerTask, (long) 1000*CommonConfig.getOptimisticUnchokingInterval(), (long) 1000*CommonConfig.getOptimisticUnchokingInterval());
 
         }
         else {

@@ -16,6 +16,7 @@ public class Peer {
     private int portNo;
     private volatile int hasFileOrNot;
     private int NoOfPreferredNeighbors;
+    public int TotalNumberOfPeers;
     //private int noOfPiece
     Map<Integer, RemotePeer> peersStartedBefore = Collections.synchronizedMap(new LinkedHashMap<>());
     Map<Integer, RemotePeer> peersYetToStart = Collections.synchronizedMap(new LinkedHashMap<>());
@@ -83,6 +84,10 @@ public class Peer {
 
     int getTotalPieceCount() {
         return totalPieces;
+    }
+
+    void setTotalNumberOfPeers(int total) {
+        this.TotalNumberOfPeers = total;
     }
 
     public void setBitFieldArray() {
@@ -235,5 +240,21 @@ public class Peer {
 
     public void setPreferredNeigborCount(int numberOfPreferredNeighbors) {
         this.NoOfPreferredNeighbors = numberOfPreferredNeighbors;
+    }
+
+    public boolean isDownloadComplete() {
+        if (hasFileOrNot!=1) {
+            return false;
+        }
+        if (allPeers.size() < TotalNumberOfPeers-1) {
+            return false;
+        }
+        for(RemotePeer rp : allPeers.values()) {
+            if(rp.getRemoteBitFieldArray().cardinality() != totalPieces){
+                System.out.println(rp.getRemotePeerId() + " doesn't have all files");
+                return false;
+            }
+        }
+        return true;
     }
 }
