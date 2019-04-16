@@ -149,6 +149,9 @@ public class PeerToPeer {
                     break;
             }
         }
+
+        this.out.close();
+        this.in.close();
     }
 
     private void handleUnchokeMessage() throws Exception {

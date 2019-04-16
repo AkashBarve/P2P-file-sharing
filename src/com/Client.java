@@ -61,6 +61,7 @@ public class Client implements Runnable{
                 PeerToPeer p2p = new PeerToPeer(socket, remotepeer);
                 p2p.initialize();
                 p2p.startCommunication();
+                socket.close();
             } catch (Exception e) {
                 //e.printStackTrace();
             }
