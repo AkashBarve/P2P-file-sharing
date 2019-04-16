@@ -165,7 +165,7 @@ public class Peer {
                             PeerToPeerHelper.sendChokeMessage(rm.OutputStream);
                             System.out.println("sending choke");
                         } catch (Exception e) {
-                            //e.printStackTrace();
+                            e.printStackTrace();
                         }
                         chokedPeers.put(key, rm);
                     }
@@ -183,7 +183,7 @@ public class Peer {
                             PeerToPeerHelper.sendChokeMessage(remPeer.OutputStream);
                             System.out.println("sending Choke");
                         } catch (Exception e) {
-                            //e.printStackTrace();
+                            e.printStackTrace();
                         }
                         //send choke message
                         chokedPeers.put(p, remPeer);
@@ -200,7 +200,7 @@ public class Peer {
                 try {
                     PeerToPeerHelper.sendUnchokeMessage(remPeer1.OutputStream);
                 } catch (Exception e) {
-                    //e.printStackTrace();
+                    e.printStackTrace();
                 }
                 PreferedPeers.put(i, remPeer1);
             }
