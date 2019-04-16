@@ -1,5 +1,6 @@
 package com.logs;
 
+import com.Peer;
 import com.RemotePeer;
 
 import java.io.File;
@@ -9,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.BitSet;
 import java.util.Date;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.*;
 import com.RemotePeer;
 
@@ -57,20 +59,6 @@ public class PeerLogging {
         PeerLogger.log(Level.INFO, msg);
     }
 
-public void totalPreferredNeighbors(Map<BitSet, RemotePeer> PreferredNeighbors){
-        String preferredString = "";
-        for(Map.Entry<BitSet, RemotePeer> entry: PreferredNeighbors.entrySet())
-        {
-            try{
-                    preferredString = preferredString+entry.getKey();
-            }
-            catch(Exception e) {
-
-            }
-        }
-        changePrefferedNeighbors(preferredString.substring(0, preferredString.length() - 1));
-}
-
     public void changePrefferedNeighbors(String preferredString){
         String msg = (dateFormat.format(new Date()).toString() + ": Peer " + peerID + " has the preferred neighbors " + preferredString + ".");
         PeerLogger.log(Level.INFO, msg);
@@ -107,7 +95,18 @@ public void totalPreferredNeighbors(Map<BitSet, RemotePeer> PreferredNeighbors){
     }
 
     public void receiveReqMsg(int peerID, int remotePeerId, int pieceIndex) {
-        String msg = (dateFormat.format(new Date()).toString() + ": Peer " +peerID + " recives a 'request' message from Peer" + remotePeerId + " for piece at index " + pieceIndex + "." );
+        String msg = (dateFormat.format(new Date()).toString() + ": Peer " + peerID + " receives a 'request' message from Peer" + remotePeerId + " for piece at index " + pieceIndex + "." );
+        PeerLogger.log(Level.INFO, msg);
+    }
+
+    public void changeOfPrefferedNeigbors(int peerID, Set<Integer> keySet) {
+        StringBuilder sb = new StringBuilder();
+        for(int i : keySet) {
+            sb.append(", " + i);
+        }
+        sb.deleteCharAt(0);
+        sb.toString();
+        String msg = (dateFormat.format(new Date()).toString() + ": Peer " + peerID + " has the preferred neighbors" + sb + ".");
         PeerLogger.log(Level.INFO, msg);
     }
 }

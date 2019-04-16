@@ -10,12 +10,10 @@ import java.util.concurrent.TimeUnit;
 import static com.CommonConfig.CommonConfig;
 import static com.CommonConfig.FileName;
 import static com.PeerConfig.PeerConfig;
-import com.logs.PeerLogging;
 
 
 public class peerProcess {
     private static Peer peer;
-    public static PeerLogging log;
     public static void main(String[] args) {
         String COMMON_CONFIG = "/Common.cfg";
         String PEER_CONFIG = "/PeerInfo.cfg";

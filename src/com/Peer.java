@@ -127,6 +127,7 @@ public class Peer {
                     .stream()
                     .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                     .forEachOrdered(x -> downloadSpeedsSorted.put(x.getKey(), x.getValue()));
+            System.out.println(downloadSpeedsSorted);
             List<Integer> tempIds = new ArrayList<>(downloadSpeedsSorted.keySet());
             for(int i=0; i<downloadSpeedsSorted.size();) {
                 if(temp.size() >= k)
@@ -193,6 +194,7 @@ public class Peer {
                 }
                 PreferedPeers.put(i, remPeer1);
             }
+            Peer.startInstance().getLogger().changeOfPrefferedNeigbors(this.peerID, this.PreferedPeers.keySet());
 
 //            for(temp.size()>0){
 //                Peer.startInstance().getLogger().totalPreferredNeighbors(temp);
