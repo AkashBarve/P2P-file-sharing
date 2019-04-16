@@ -218,9 +218,9 @@ public class Peer {
         // Unchoke 1 chokedPeer randomly
         System.out.println("doing optimisticallyUnchokeRandomPeer: "+ interestedPeers.isEmpty());
         if (!interestedPeers.isEmpty()) {
-            List<RemotePeer> interestedPeersList = new ArrayList<>(this.interestedPeers.values());
+            List<Integer> interestedPeersList = new ArrayList<>(this.interestedPeers.keySet());
             int randomPeerIndex = ThreadLocalRandom.current().nextInt(interestedPeersList.size());
-            this.optimisticallyUnchokedPeer = interestedPeersList.get(randomPeerIndex);
+            this.optimisticallyUnchokedPeer = this.interestedPeers.get(interestedPeersList.get(randomPeerIndex));
             System.out.println("got optimisticallyUnchokeRandomPeer: "+ optimisticallyUnchokedPeer.getRemotePeerId());
 
             if (!this.PreferedPeers.containsKey(this.optimisticallyUnchokedPeer.getRemotePeerId())) {
