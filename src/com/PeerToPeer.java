@@ -206,7 +206,6 @@ public class PeerToPeer {
         int pieceIndex = MessageUtil.byteArrayToInt(pieceIndexByteArray);
         BitSet temp = Peer.startInstance().getBitFieldArray();
         int trues = temp.cardinality();
-        int falses = temp.length() - trues;
         if (!Peer.startInstance().getBitFieldArray().get(pieceIndex)) {
             Peer.startInstance().getLogger().receivesPiece(this.peerID, pieceIndex, this.remotePeer.getRemotePeerId(), trues + 1);
             this.fileManager.receivePartOfFile(pieceIndex, MessageUtil.removePieceIndex(messagePayload));

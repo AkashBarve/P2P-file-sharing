@@ -104,7 +104,8 @@ public class PeerLogging {
         for(int i : keySet) {
             sb.append(", " + i);
         }
-        sb.deleteCharAt(0);
+        if(sb.length()>0)
+            sb.deleteCharAt(0);
         sb.toString();
         String msg = (dateFormat.format(new Date()).toString() + ": Peer " + peerID + " has the preferred neighbors" + sb + ".");
         PeerLogger.log(Level.INFO, msg);
