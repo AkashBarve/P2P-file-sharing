@@ -17,17 +17,17 @@ public class Peer {
     private int hasFileOrNot;
     private int NoOfPreferredNeighbors;
     //private int noOfPiece
-    Map<Integer, RemotePeer> peersStartedBefore = Collections.synchronizedMap(new LinkedHashMap<>());
-    Map<Integer, RemotePeer> peersYetToStart = Collections.synchronizedMap(new LinkedHashMap<>());
-    Map<Integer, RemotePeer> interestedPeers = Collections.synchronizedMap(new LinkedHashMap<>());
-    Map<Integer, RemotePeer> allPeers = Collections.synchronizedMap(new LinkedHashMap<>());
-    Map<Integer, RemotePeer> chokedPeers = Collections.synchronizedMap(new LinkedHashMap<>());
-    Map<Integer, RemotePeer> PreferedPeers = Collections.synchronizedMap(new LinkedHashMap<>());
-    Map<Integer, Double> downloadSpeeds = Collections.synchronizedMap(new LinkedHashMap<>());
-    RemotePeer optimisticallyUnchokedPeer;
+    volatile Map<Integer, RemotePeer> peersStartedBefore = Collections.synchronizedMap(new LinkedHashMap<>());
+    volatile Map<Integer, RemotePeer> peersYetToStart = Collections.synchronizedMap(new LinkedHashMap<>());
+    volatile Map<Integer, RemotePeer> interestedPeers = Collections.synchronizedMap(new LinkedHashMap<>());
+    volatile Map<Integer, RemotePeer> allPeers = Collections.synchronizedMap(new LinkedHashMap<>());
+    volatile Map<Integer, RemotePeer> chokedPeers = Collections.synchronizedMap(new LinkedHashMap<>());
+    volatile Map<Integer, RemotePeer> PreferedPeers = Collections.synchronizedMap(new LinkedHashMap<>());
+    volatile Map<Integer, Double> downloadSpeeds = Collections.synchronizedMap(new LinkedHashMap<>());
+    volatile RemotePeer optimisticallyUnchokedPeer;
     private int totalPieces;
     private volatile BitSet bitfieldArray = new BitSet(this.getTotalPieceCount());
-    private BitSet FullBitSet = new BitSet(this.getTotalPieceCount());
+    private volatile BitSet FullBitSet = new BitSet(this.getTotalPieceCount());
     //private volatile Boolean[] bitfieldArray = new Boolean[this.getTotalPieceCount()];
     public static Peer startInstance() {
         if (peer == null) {
