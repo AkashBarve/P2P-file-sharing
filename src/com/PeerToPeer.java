@@ -108,7 +108,6 @@ public class PeerToPeer {
             Message incomingMessage = PeerToPeerHelper.getMessage(this.in);
             byte messageType = incomingMessage.getMessageType();
             byte[] messagePayload = incomingMessage.getMessagePayload();
-            System.out.println(System.nanoTime() + " : got message : " + (int)messageType);
 
             switch (messageType) {
                 case (byte) 0:
