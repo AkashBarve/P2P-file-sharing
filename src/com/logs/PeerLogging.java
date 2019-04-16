@@ -45,6 +45,7 @@ public class PeerLogging {
         logHandler.setLevel(Level.parse("INFO"));
         logHandler.setFormatter(new SimpleFormatter());
         PeerLogger.addHandler(logHandler);
+        PeerLogger.setUseParentHandlers(false);
         this.peerID = peerID;
         System.out.println("logger created");
     }

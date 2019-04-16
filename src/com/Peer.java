@@ -116,7 +116,7 @@ public class Peer {
         for(int i = 0; i < getTotalPieceCount(); i++) {
             FullBitSet.set(i);
         }
-    };
+    }
 
     public void unchokePreferredPeers() {
         System.out.println("doing unchoke");
