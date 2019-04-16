@@ -23,7 +23,7 @@ public class Peer {
     volatile Map<Integer, RemotePeer> allPeers = Collections.synchronizedMap(new LinkedHashMap<>());
     volatile Map<Integer, RemotePeer> chokedPeers = Collections.synchronizedMap(new LinkedHashMap<>());
     volatile Map<Integer, RemotePeer> PreferedPeers = Collections.synchronizedMap(new LinkedHashMap<>());
-    volatile Map<Integer, Double> downloadSpeeds = Collections.synchronizedMap(new LinkedHashMap<>());
+    volatile Map<Integer, Long> downloadSpeeds = Collections.synchronizedMap(new LinkedHashMap<>());
     volatile RemotePeer optimisticallyUnchokedPeer;
     private int totalPieces;
     private volatile BitSet bitfieldArray = new BitSet(this.getTotalPieceCount());
@@ -50,6 +50,9 @@ public class Peer {
     }
     public void setHostName(String s) {
         this.hostName = s;
+    }
+    public String getHostName() {
+        return this.hostName;
     }
 
     public void setPortNo(int portNo) {
@@ -122,7 +125,9 @@ public class Peer {
             int k = NoOfPreferredNeighbors;
             Set<Integer> temp = new HashSet<>();
             List<Integer> keys = new ArrayList<>(interestedPeers.keySet());
-            Map<Integer, Double> downloadSpeedsSorted = Collections.synchronizedMap(new LinkedHashMap<>());
+            System.out.println("***************");
+            System.out.println(downloadSpeeds);
+            Map<Integer, Long> downloadSpeedsSorted = Collections.synchronizedMap(new LinkedHashMap<>());
             downloadSpeeds.entrySet()
                     .stream()
                     .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
@@ -149,7 +154,7 @@ public class Peer {
 
             if (PreferedPeers.isEmpty()) {
                 for(int key : keys) {
-                    if(!temp.contains(key) && optimisticallyUnchokedPeer!=null && optimisticallyUnchokedPeer.getRemotePeerId() != key) {
+                    if(!temp.contains(key) && !allPeers.get(key).equals(optimisticallyUnchokedPeer)) {
                         RemotePeer rm = interestedPeers.get(key);
                         try {
                             PeerToPeerHelper.sendChokeMessage(rm.OutputStream);
@@ -167,11 +172,11 @@ public class Peer {
                     temp.remove(p);
                 }
                 else {
-                    if (optimisticallyUnchokedPeer!=null && optimisticallyUnchokedPeer.getRemotePeerId() != p) {
+                    if (!allPeers.get(p).equals(optimisticallyUnchokedPeer)) {
                         RemotePeer remPeer = PreferedPeers.get(p);
                         try {
                             PeerToPeerHelper.sendChokeMessage(remPeer.OutputStream);
-                            System.out.println("sending unchoke");
+                            System.out.println("sending Choke");
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
