@@ -81,6 +81,11 @@ public class Server implements Runnable {
             try {
                 p2p.startCommunication();
             } catch (Exception e) {
+                try {
+                    this.socket.close();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
                 throw new RuntimeException("Can't communicate with: "+ this.remotePeer.getRemotePeerId(), e);
             }
 

@@ -69,10 +69,12 @@ public class ManageFile {
                 + getFileName());
         byte[] combinedFile = new byte[getFileSize()];
         int count= 0;
-        for (Map.Entry<Integer, byte[]> e : fileSoFar.entrySet()) {
-            for(int i=0;i<e.getValue().length;i++){
-                combinedFile[count] = e.getValue()[i];
-                count++;
+        synchronized (fileSoFar.entrySet()) {
+            for (Map.Entry<Integer, byte[]> e : fileSoFar.entrySet()) {
+                for (int i = 0; i < e.getValue().length; i++) {
+                    combinedFile[count] = e.getValue()[i];
+                    count++;
+                }
             }
         }
         fileOutputStream = new FileOutputStream(mergeFile);

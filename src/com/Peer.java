@@ -125,112 +125,118 @@ public class Peer {
 
     public void unchokePreferredPeers() {
         System.out.println("doing unchoke");
-        if (!interestedPeers.isEmpty()) {
-            System.out.println("inside upp");
-            int k = NoOfPreferredNeighbors;
-            Set<Integer> temp = new HashSet<>();
-            List<Integer> keys = new ArrayList<>(interestedPeers.keySet());
-            System.out.println("***************");
-            System.out.println(downloadSpeeds);
-            Map<Integer, Long> downloadSpeedsSorted = Collections.synchronizedMap(new LinkedHashMap<>());
-            downloadSpeeds.entrySet()
-                    .stream()
-                    .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-                    .forEachOrdered(x -> downloadSpeedsSorted.put(x.getKey(), x.getValue()));
-            System.out.println(downloadSpeedsSorted);
-            List<Integer> tempIds = new ArrayList<>(downloadSpeedsSorted.keySet());
-            for(int i=0; i<downloadSpeedsSorted.size();) {
-                if(temp.size() >= k)
-                    break;
-                if(interestedPeers.containsKey(tempIds.get(i)))
-                    temp.add(tempIds.get(i++));
-            }
+        synchronized (interestedPeers) {
+            synchronized (PreferedPeers) {
+                if (!interestedPeers.isEmpty()) {
+                    System.out.println("inside upp");
+                    int k = NoOfPreferredNeighbors;
+                    Set<Integer> temp = new HashSet<>();
+                    List<Integer> keys = new ArrayList<>(interestedPeers.keySet());
+                    int tempSize = interestedPeers.size();
+                    System.out.println("***************");
+                    System.out.println(downloadSpeeds);
+                    Map<Integer, Long> downloadSpeedsSorted = Collections.synchronizedMap(new LinkedHashMap<>());
+                    downloadSpeeds.entrySet()
+                            .stream()
+                            .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                            .forEachOrdered(x -> downloadSpeedsSorted.put(x.getKey(), x.getValue()));
+                    System.out.println(downloadSpeedsSorted);
+                    List<Integer> tempIds = new ArrayList<>(downloadSpeedsSorted.keySet());
+                    for (int i = 0; i < downloadSpeedsSorted.size(); ) {
+                        if (temp.size() >= k)
+                            break;
+                        if (interestedPeers.containsKey(tempIds.get(i)))
+                            temp.add(tempIds.get(i++));
+                    }
 
-            for(int i=0; i<interestedPeers.size();) {
-                if(temp.size() >= k)
-                    break;
-                int randomIdx = ThreadLocalRandom.current().nextInt(interestedPeers.size());
-                int randomPeer = keys.get(randomIdx);
-                if(!temp.contains(randomPeer)) {
-                    temp.add(randomPeer);
-                    i++;
-                }
-            }
+                    for (int i = 0; i < interestedPeers.size(); ) {
+                        if (temp.size() >= k)
+                            break;
+                        int randomIdx = ThreadLocalRandom.current().nextInt(tempSize);
+                        int randomPeer = keys.get(randomIdx);
+                        if (!temp.contains(randomPeer)) {
+                            temp.add(randomPeer);
+                            i++;
+                        }
+                    }
 
-            if (PreferedPeers.isEmpty()) {
-                for(int key : keys) {
-                    if(!temp.contains(key) && !allPeers.get(key).equals(optimisticallyUnchokedPeer)) {
-                        RemotePeer rm = interestedPeers.get(key);
+                    if (PreferedPeers.isEmpty()) {
+                        for (int key : keys) {
+                            if (!temp.contains(key) && !allPeers.get(key).equals(optimisticallyUnchokedPeer)) {
+                                RemotePeer rm = interestedPeers.get(key);
+                                try {
+                                    PeerToPeerHelper.sendChokeMessage(rm.OutputStream);
+                                    System.out.println("sending choke");
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                                chokedPeers.put(key, rm);
+                            }
+                        }
+                    }
+                    Iterator<Integer> it =  PreferedPeers.keySet().iterator();
+                    while(it.hasNext()){
+                        Integer p = it.next();
+                        if (temp.contains(p)) {
+                            temp.remove(p);
+                        } else {
+                            if (!allPeers.get(p).equals(optimisticallyUnchokedPeer)) {
+                                RemotePeer remPeer = PreferedPeers.get(p);
+                                try {
+                                    PeerToPeerHelper.sendChokeMessage(remPeer.OutputStream);
+                                    System.out.println("sending Choke");
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                                //send choke message
+                                chokedPeers.put(p, remPeer);
+                            }
+                            PreferedPeers.remove(p);
+
+                        }
+                    }
+                    for (int i : temp) {
+                        System.out.println("i in temp: " + i);
+                        RemotePeer remPeer1 = allPeers.get(i);
+                        System.out.println("remPeer1: " + remPeer1.getRemotePeerId());
+                        //send unchoke message
                         try {
-                            PeerToPeerHelper.sendChokeMessage(rm.OutputStream);
-                            System.out.println("sending choke");
+                            PeerToPeerHelper.sendUnchokeMessage(remPeer1.OutputStream);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                        chokedPeers.put(key, rm);
+                        PreferedPeers.put(i, remPeer1);
                     }
-                }
-            }
-            Set<Integer> temp1 = PreferedPeers.keySet();
-            for(int p : temp1) {
-                if(temp.contains(p)) {
-                    temp.remove(p);
-                }
-                else {
-                    if (!allPeers.get(p).equals(optimisticallyUnchokedPeer)) {
-                        RemotePeer remPeer = PreferedPeers.get(p);
-                        try {
-                            PeerToPeerHelper.sendChokeMessage(remPeer.OutputStream);
-                            System.out.println("sending Choke");
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        //send choke message
-                        chokedPeers.put(p, remPeer);
-                    }
-                    PreferedPeers.remove(p);
-
-                }
-            }
-            for (int i : temp) {
-                System.out.println("i in temp: " + i);
-                RemotePeer remPeer1  = allPeers.get(i);
-                System.out.println("remPeer1: " + remPeer1.getRemotePeerId());
-                //send unchoke message
-                try {
-                    PeerToPeerHelper.sendUnchokeMessage(remPeer1.OutputStream);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                PreferedPeers.put(i, remPeer1);
-            }
-            Peer.startInstance().getLogger().changeOfPrefferedNeigbors(this.peerID, this.PreferedPeers.keySet());
+                    Peer.startInstance().getLogger().changeOfPrefferedNeigbors(this.peerID, this.PreferedPeers.keySet());
 
 //            for(temp.size()>0){
 //                Peer.startInstance().getLogger().totalPreferredNeighbors(temp);
 //            }
-            // Unchoke k willingPeers based onl
+                    // Unchoke k willingPeers based onl
+                }
+            }
         }
-
     }
 
     public void optimisticallyUnchokeRandomPeer() {
         // Unchoke 1 chokedPeer randomly
         System.out.println("doing optimisticallyUnchokeRandomPeer: "+ interestedPeers.isEmpty());
-        if (!interestedPeers.isEmpty()) {
-            List<Integer> interestedPeersList = new ArrayList<>(this.interestedPeers.keySet());
-            int randomPeerIndex = ThreadLocalRandom.current().nextInt(interestedPeersList.size());
-            this.optimisticallyUnchokedPeer = this.interestedPeers.get(interestedPeersList.get(randomPeerIndex));
-            System.out.println("got optimisticallyUnchokeRandomPeer: "+ optimisticallyUnchokedPeer.getRemotePeerId());
+        synchronized (interestedPeers) {
+            if (!interestedPeers.isEmpty()) {
+                List<Integer> interestedPeersList = new ArrayList<>(this.interestedPeers.keySet());
+                int randomPeerIndex = ThreadLocalRandom.current().nextInt(interestedPeersList.size());
+                this.optimisticallyUnchokedPeer = this.interestedPeers.get(interestedPeersList.get(randomPeerIndex));
+                System.out.println("got optimisticallyUnchokeRandomPeer: " + optimisticallyUnchokedPeer.getRemotePeerId());
 
-            if (!this.PreferedPeers.containsKey(this.optimisticallyUnchokedPeer.getRemotePeerId())) {
-                System.out.println("send unchoke: "+ optimisticallyUnchokedPeer.getRemotePeerId());
-                try {
-                    PeerToPeerHelper.sendUnchokeMessage(this.optimisticallyUnchokedPeer.OutputStream);
-                    if (this.chokedPeers.containsKey(this.optimisticallyUnchokedPeer.getRemotePeerId()))
-                        this.chokedPeers.remove(this.optimisticallyUnchokedPeer.getRemotePeerId());
-                    Peer.startInstance().getLogger().changeOptimisticallyUnchoked(this.peerID, this.optimisticallyUnchokedPeer.getRemotePeerId());
-                } catch (Exception e) {
+                if (!this.PreferedPeers.containsKey(this.optimisticallyUnchokedPeer.getRemotePeerId())) {
+                    System.out.println("send unchoke: " + optimisticallyUnchokedPeer.getRemotePeerId());
+                    try {
+                        PeerToPeerHelper.sendUnchokeMessage(this.optimisticallyUnchokedPeer.OutputStream);
+                        if (this.chokedPeers.containsKey(this.optimisticallyUnchokedPeer.getRemotePeerId()))
+                            this.chokedPeers.remove(this.optimisticallyUnchokedPeer.getRemotePeerId());
+                        Peer.startInstance().getLogger().changeOptimisticallyUnchoked(this.peerID, this.optimisticallyUnchokedPeer.getRemotePeerId());
+                    } catch (Exception e) {
+                    }
                 }
             }
         }
